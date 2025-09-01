@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import "./index.css";
 
 // If your template has strict mode or CSS imports, keep them.
 // Example keeps StrictMode (fine either way).
