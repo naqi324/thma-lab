@@ -3,17 +3,23 @@ import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
 
+
 const md = new MarkdownIt({
   html: true,
   linkify: true,
-  highlight: (str, lang) => {
+});
+
+// 2) Add highlight with explicit param/return types
+md.set({
+  highlight: (str: string, lang: string): string => {
     if (lang && hljs.getLanguage(lang)) {
       try {
         return `<pre><code class="hljs">${hljs.highlight(str, { language: lang }).value}</code></pre>`;
       } catch {
-        /* ignore */
+        /* noop */
       }
     }
+    // fallback: escape code safely using markdown-it's util
     return `<pre><code class="hljs">${md.utils.escapeHtml(str)}</code></pre>`;
   },
 });
