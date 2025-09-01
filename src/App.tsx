@@ -28,9 +28,9 @@ export default function App() {
       .catch(() => setHtml("Failed to load markdown."));
   }, []);
 
-  return (
-    <main style={{ maxWidth: 860, margin: "2rem auto", padding: "0 1rem", lineHeight: 1.6 }}>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
-    </main>
-  );
+return (
+  <main>
+    <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
+  </main>
+);
 }
