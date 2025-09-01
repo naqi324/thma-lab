@@ -1,40 +1,36 @@
 import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
+import MarkdownIt from "markdown-it";
+import hljs from "highlight.js";
+import "highlight.js/styles/github.css";
 
-const client = generateClient<Schema>();
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  highlight: (str, lang) => {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return `<pre><code class="hljs">${hljs.highlight(str, { language: lang }).value}</code></pre>`;
+      } catch {
+        /* ignore */
+      }
+    }
+    return `<pre><code class="hljs">${md.utils.escapeHtml(str)}</code></pre>`;
+  },
+});
 
-function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
+export default function App() {
+  const [html, setHtml] = useState<string>("Loading…");
 
   useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
+    fetch("/index.md")
+      .then((r) => r.text())
+      .then((text) => setHtml(md.render(text)))
+      .catch(() => setHtml("Failed to load markdown."));
   }, []);
 
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-  }
-
   return (
-    <main>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
-        ))}
-      </ul>
-      <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-          Review next step of this tutorial.
-        </a>
-      </div>
+    <main style={{ maxWidth: 860, margin: "2rem auto", padding: "0 1rem", lineHeight: 1.6 }}>
+      <div dangerouslySetInnerHTML={{ __html: html }} />
     </main>
   );
 }
-
-export default App;
