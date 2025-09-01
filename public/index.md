@@ -288,6 +288,7 @@ Choose *formulary-guard*
 #### Functions
 
 Click `Create new function`
+
 ![Create new function](/images/create-function.png)
 
 ##### Create function
@@ -302,7 +303,162 @@ Click `Create new function`
 <summary>helpdesk_ticket function schema</summary>
 
 ```json
-{"openapi":"3.0.1","info":{"title":"Helpdesk Ticket API (Mock via API Gateway)","version":"1.0.0","description":"Creates a helpdesk ticket for biomedical or IT incidents with structured details."},"servers":[{"url":"https://t1ba96kty9.execute-api.us-west-2.amazonaws.com/prod","description":"Your API Gateway invoke URL including stage, e.g., https://abc123.execute-api.us-east-1.amazonaws.com/prod"}],"paths":{"/helpdesk/tickets":{"post":{"operationId":"createHelpdeskTicket","tags":["Helpdesk"],"summary":"Create a new helpdesk ticket","description":"Creates a ticket capturing category, summary, unit, priority, and optional device identifier.","requestBody":{"required":true,"description":"Ticket details used to create a new helpdesk record.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TicketCreateRequest"},"examples":{"example":{"summary":"High priority NIBP cuff error on unit 4B","value":{"category":"Biomed","summary":"Recurring NIBP cuff error; leak test passed once then failed twice.","unit":"4B","priority":"High","device_id":"nibp-200"}}}}}},"responses":{"201":{"description":"Ticket successfully created.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Ticket"},"examples":{"example":{"summary":"Created ticket","value":{"ticket_id":"TCK-4231","status":"Open","created_at":"2025-08-31T12:00:00Z","link":"https://mock.example/tickets/TCK-4231"}}}}}},"400":{"description":"Bad request (missing or invalid fields)."},"500":{"description":"Server error."}}}}},"components":{"schemas":{"TicketCreateRequest":{"type":"object","description":"Fields required to create a helpdesk ticket.","properties":{"category":{"type":"string","description":"Ticket category such as 'Biomed' or 'IT'.","minLength":1},"summary":{"type":"string","description":"Concise description of the issue and steps already taken.","minLength":1},"unit":{"type":"string","description":"Clinical unit or location where the problem occurs (for example: 'ICU-East', '4B')."},"priority":{"type":"string","description":"Ticket urgency.","enum":["Low","Medium","High"]},"device_id":{"type":"string","description":"Optional device identifier related to the incident."}},"required":["category","summary","priority"]},"Ticket":{"type":"object","description":"Response payload for a created helpdesk ticket.","properties":{"ticket_id":{"type":"string","description":"Server‑assigned ticket identifier (e.g., 'TCK-4231')."},"status":{"type":"string","description":"Ticket status after creation (typically 'Open')."},"created_at":{"type":"string","format":"date-time","description":"UTC timestamp when the ticket was created."},"link":{"type":"string","description":"URL to view or manage the ticket in the helpdesk system."}},"required":["ticket_id","status","created_at"]}},"securitySchemes":{"ApiKeyAuth":{"type":"apiKey","in":"header","name":"x-api-key","description":"API key issued from API Gateway Usage Plan."}}}}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Helpdesk Ticket API (Mock via API Gateway)",
+    "version": "1.0.0",
+    "description": "Creates a helpdesk ticket for biomedical or IT incidents with structured details."
+  },
+  "servers": [
+    {
+      "url": "https://t1ba96kty9.execute-api.us-west-2.amazonaws.com/prod",
+      "description": "Your API Gateway invoke URL including stage, e.g., https://abc123.execute-api.us-east-1.amazonaws.com/prod"
+    }
+  ],
+  "paths": {
+    "/helpdesk/tickets": {
+      "post": {
+        "operationId": "createHelpdeskTicket",
+        "tags": [
+          "Helpdesk"
+        ],
+        "summary": "Create a new helpdesk ticket",
+        "description": "Creates a ticket capturing category, summary, unit, priority, and optional device identifier.",
+        "requestBody": {
+          "required": true,
+          "description": "Ticket details used to create a new helpdesk record.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketCreateRequest"
+              },
+              "examples": {
+                "example": {
+                  "summary": "High priority NIBP cuff error on unit 4B",
+                  "value": {
+                    "category": "Biomed",
+                    "summary": "Recurring NIBP cuff error; leak test passed once then failed twice.",
+                    "unit": "4B",
+                    "priority": "High",
+                    "device_id": "nibp-200"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ticket successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                },
+                "examples": {
+                  "example": {
+                    "summary": "Created ticket",
+                    "value": {
+                      "ticket_id": "TCK-4231",
+                      "status": "Open",
+                      "created_at": "2025-08-31T12:00:00Z",
+                      "link": "https://mock.example/tickets/TCK-4231"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing or invalid fields)."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TicketCreateRequest": {
+        "type": "object",
+        "description": "Fields required to create a helpdesk ticket.",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Ticket category such as 'Biomed' or 'IT'.",
+            "minLength": 1
+          },
+          "summary": {
+            "type": "string",
+            "description": "Concise description of the issue and steps already taken.",
+            "minLength": 1
+          },
+          "unit": {
+            "type": "string",
+            "description": "Clinical unit or location where the problem occurs (for example: 'ICU-East', '4B')."
+          },
+          "priority": {
+            "type": "string",
+            "description": "Ticket urgency.",
+            "enum": [
+              "Low",
+              "Medium",
+              "High"
+            ]
+          },
+          "device_id": {
+            "type": "string",
+            "description": "Optional device identifier related to the incident."
+          }
+        },
+        "required": [
+          "category",
+          "summary",
+          "priority"
+        ]
+      },
+      "Ticket": {
+        "type": "object",
+        "description": "Response payload for a created helpdesk ticket.",
+        "properties": {
+          "ticket_id": {
+            "type": "string",
+            "description": "Server‑assigned ticket identifier (e.g., 'TCK-4231')."
+          },
+          "status": {
+            "type": "string",
+            "description": "Ticket status after creation (typically 'Open')."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC timestamp when the ticket was created."
+          },
+          "link": {
+            "type": "string",
+            "description": "URL to view or manage the ticket in the helpdesk system."
+          }
+        },
+        "required": [
+          "ticket_id",
+          "status",
+          "created_at"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "API key issued from API Gateway Usage Plan."
+      }
+    }
+  }
+}
 ```
 
 
@@ -325,7 +481,150 @@ Click `Create new function`
 <summary>device_lookup function schema</summary>
 
 ```json
-{"openapi":"3.0.1","info":{"title":"Device Lookup API (Mock via API Gateway)","version":"1.0.0","description":"Returns troubleshooting steps and inventory status for a biomedical device."},"servers":[{"url":"https://t1ba96kty9.execute-api.us-west-2.amazonaws.com/prod","description":"Your API Gateway invoke URL including stage, e.g., https://abc123.execute-api.us-east-1.amazonaws.com/prod"}],"paths":{"/biomed/devices/{device_id}":{"get":{"operationId":"getDeviceById","tags":["Devices"],"summary":"Get device info and inventory status","description":"Fetch troubleshooting guidance and on-hand inventory vs par level for a specific device.","parameters":[{"name":"device_id","in":"path","required":true,"description":"Unique device identifier (for example: 'spo2-probe', 'nibp-200').","schema":{"type":"string","minLength":1}},{"name":"unit","in":"query","required":false,"description":"Clinical unit or location to evaluate inventory for (for example: 'ICU-East'). Defaults to 'Main' if omitted.","schema":{"type":"string","default":"Main"}}],"responses":{"200":{"description":"Device information successfully retrieved.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/DeviceInfo"},"examples":{"example":{"summary":"SpO2 probe in ICU-East","value":{"device_id":"spo2-probe","model":"SPO2-PROBE","troubleshooting":["Inspect for kinks or closed clamps","Check for infiltration","Flush line if policy allows","Verify pressure limits","Replace tubing if unresolved","Escalate to biomed"],"par_level":6,"on_hand":3,"unit":"ICU-East"}}}}}},"400":{"description":"Bad request (invalid parameters)."},"404":{"description":"Device not found."},"500":{"description":"Server error."}}}}},"components":{"schemas":{"DeviceInfo":{"type":"object","description":"Troubleshooting guidance and inventory info for a device at a given unit.","properties":{"device_id":{"type":"string","description":"The device identifier."},"model":{"type":"string","description":"A human‑readable device model string derived from the identifier."},"troubleshooting":{"type":"array","description":"Ordered troubleshooting steps to attempt safely.","items":{"type":"string"}},"par_level":{"type":"integer","format":"int32","description":"Minimum desired on‑hand quantity for the unit."},"on_hand":{"type":"integer","format":"int32","description":"Current counted quantity on hand for the unit."},"unit":{"type":"string","description":"Clinical unit or location name."}},"required":["device_id","model","troubleshooting","par_level","on_hand","unit"]}},"securitySchemes":{"ApiKeyAuth":{"type":"apiKey","in":"header","name":"x-api-key","description":"API key issued from API Gateway Usage Plan."}}}}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Device Lookup API (Mock via API Gateway)",
+    "version": "1.0.0",
+    "description": "Returns troubleshooting steps and inventory status for a biomedical device."
+  },
+  "servers": [
+    {
+      "url": "https://t1ba96kty9.execute-api.us-west-2.amazonaws.com/prod",
+      "description": "Your API Gateway invoke URL including stage, e.g., https://abc123.execute-api.us-east-1.amazonaws.com/prod"
+    }
+  ],
+  "paths": {
+    "/biomed/devices/{device_id}": {
+      "get": {
+        "operationId": "getDeviceById",
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Get device info and inventory status",
+        "description": "Fetch troubleshooting guidance and on-hand inventory vs par level for a specific device.",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "required": true,
+            "description": "Unique device identifier (for example: 'spo2-probe', 'nibp-200').",
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "unit",
+            "in": "query",
+            "required": false,
+            "description": "Clinical unit or location to evaluate inventory for (for example: 'ICU-East'). Defaults to 'Main' if omitted.",
+            "schema": {
+              "type": "string",
+              "default": "Main"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Device information successfully retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceInfo"
+                },
+                "examples": {
+                  "example": {
+                    "summary": "SpO2 probe in ICU-East",
+                    "value": {
+                      "device_id": "spo2-probe",
+                      "model": "SPO2-PROBE",
+                      "troubleshooting": [
+                        "Inspect for kinks or closed clamps",
+                        "Check for infiltration",
+                        "Flush line if policy allows",
+                        "Verify pressure limits",
+                        "Replace tubing if unresolved",
+                        "Escalate to biomed"
+                      ],
+                      "par_level": 6,
+                      "on_hand": 3,
+                      "unit": "ICU-East"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid parameters)."
+          },
+          "404": {
+            "description": "Device not found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DeviceInfo": {
+        "type": "object",
+        "description": "Troubleshooting guidance and inventory info for a device at a given unit.",
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "description": "The device identifier."
+          },
+          "model": {
+            "type": "string",
+            "description": "A human‑readable device model string derived from the identifier."
+          },
+          "troubleshooting": {
+            "type": "array",
+            "description": "Ordered troubleshooting steps to attempt safely.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "par_level": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Minimum desired on‑hand quantity for the unit."
+          },
+          "on_hand": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Current counted quantity on hand for the unit."
+          },
+          "unit": {
+            "type": "string",
+            "description": "Clinical unit or location name."
+          }
+        },
+        "required": [
+          "device_id",
+          "model",
+          "troubleshooting",
+          "par_level",
+          "on_hand",
+          "unit"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "API key issued from API Gateway Usage Plan."
+      }
+    }
+  }
+}
 ```
 
 
@@ -370,13 +669,5 @@ Open a High priority ticket for a recurring NIBP cuff error on unit 4B and summa
 6. Click *Back to configs*
 
 ![Back to configs](/images/back-to-configs.png)
-
-
-7. **Test:**  
-   - “SpO₂ probe signal loss—first fixes and when to escalate?” (KB‑grounded)  
-   - “Are we below par level for SpO₂ probes in ICU East?” → The model should **call the device API** and summarize results.  
-   - “Open a High priority ticket for recurring NIBP cuff error on 4B.” → The model should **call the ticket API** and report the `ticket_id`.
-
-IIf a function call fails, Palmyra should state the failure and continue with KB‑based guidance.
 
 ---
