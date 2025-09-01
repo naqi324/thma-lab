@@ -29,30 +29,59 @@ export default function App() {
   }, []);
 
 
- useEffect(() => {
+// Enhance ALL fenced code blocks with a copy button (incl. inside <details>)
+useEffect(() => {
   if (!html) return;
 
-  // Delay to ensure DOM is updated
-  const timer = setTimeout(() => {
-    document.querySelectorAll("details").forEach((details) => {
-      const pre = details.querySelector("pre code");
-      if (pre && !details.querySelector(".copy-btn")) {
-        // Wrap details in a container for positioning
-        details.classList.add("details-code");
+  const enhance = () => {
+    // Find all <pre><code> blocks rendered by markdown-it/highlight.js
+    document.querySelectorAll<HTMLPreElement>(".content pre").forEach((pre) => {
+      const code = pre.querySelector("code");
+      if (!code) return;
 
-        const btn = document.createElement("button");
-        btn.textContent = "Copy";
-        btn.className = "copy-btn";
-        btn.onclick = () => {
-          navigator.clipboard.writeText(pre.textContent || "");
-          btn.textContent = "Copied!";
-          setTimeout(() => (btn.textContent = "Copy"), 1500);
-        };
-        details.appendChild(btn);
+      // If already enhanced, skip
+      if (pre.parentElement && pre.parentElement.classList.contains("codeblock")) {
+        return;
       }
-    });
-  }, 0);
 
+      // Wrap in a positioned container for the button
+      const wrapper = document.createElement("div");
+      wrapper.className = "codeblock";
+
+      // Insert wrapper and move <pre> inside it
+      pre.replaceWith(wrapper);
+      wrapper.appendChild(pre);
+
+      // Create the button
+      const btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.type = "button";
+      btn.title = "Copy code";
+      btn.setAttribute("aria-label", "Copy code");
+      btn.textContent = "Copy";
+
+      // Copy handler
+      btn.onclick = () => {
+        const text = code.textContent || "";
+        navigator.clipboard.writeText(text).then(() => {
+          const original = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(() => (btn.textContent = original || "Copy"), 1500);
+        });
+      };
+
+      // If this code block sits inside <details>, keep your existing visual treatment
+      const details = wrapper.closest("details");
+      if (details) {
+        details.classList.add("details-code"); // optional: reuse your earlier class
+      }
+
+      wrapper.appendChild(btn);
+    });
+  };
+
+  // Run after the DOM updates
+  const timer = setTimeout(enhance, 0);
   return () => clearTimeout(timer);
 }, [html]);
 

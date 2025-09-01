@@ -186,6 +186,30 @@ code {
   background: var(--link);
   color: #fff;
 }
+
+/* Put this in src/index.css (near your existing styles) */
+.codeblock {
+  position: relative;         /* anchor for the button */
+}
+.codeblock .copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  z-index: 1;
+}
+.codeblock .copy-btn:hover {
+  background: var(--link);
+  color: #fff;
+}
+
 .details-code {
   position: relative; /* so the button can be positioned inside */
 }
