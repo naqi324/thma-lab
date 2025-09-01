@@ -28,6 +28,34 @@ export default function App() {
       .catch(() => setHtml("Failed to load markdown."));
   }, []);
 
+
+ useEffect(() => {
+  if (!html) return;
+
+  // Delay to ensure DOM is updated
+  const timer = setTimeout(() => {
+    document.querySelectorAll("details").forEach((details) => {
+      const pre = details.querySelector("pre code");
+      if (pre && !details.querySelector(".copy-btn")) {
+        // Wrap details in a container for positioning
+        details.classList.add("details-code");
+
+        const btn = document.createElement("button");
+        btn.textContent = "Copy";
+        btn.className = "copy-btn";
+        btn.onclick = () => {
+          navigator.clipboard.writeText(pre.textContent || "");
+          btn.textContent = "Copied!";
+          setTimeout(() => (btn.textContent = "Copy"), 1500);
+        };
+        details.appendChild(btn);
+      }
+    });
+  }, 0);
+
+  return () => clearTimeout(timer);
+}, [html]);
+
 return (
   <main>
     <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
