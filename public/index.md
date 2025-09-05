@@ -46,6 +46,7 @@ Output
 #### Add examples
 
 1. Click the *Add example* link to add the following examples.
+![Add Example](/images/add-example.png)
 
 2. Click the *Save* button in the top right after creating each of the examples.
 
