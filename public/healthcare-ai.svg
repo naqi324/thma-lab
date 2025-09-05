@@ -1,0 +1,32 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="16" cy="16" r="15" fill="url(#gradient1)" stroke="#0066cc" stroke-width="1"/>
+  
+  <!-- Healthcare Cross Symbol -->
+  <path d="M14 8h4v16h-4V8z" fill="white" opacity="0.95"/>
+  <path d="M8 14h16v4H8v-4z" fill="white" opacity="0.95"/>
+  
+  <!-- AI Brain Network Overlay -->
+  <g opacity="0.8">
+    <!-- Neural nodes -->
+    <circle cx="10" cy="10" r="1.5" fill="#00a878"/>
+    <circle cx="22" cy="10" r="1.5" fill="#00a878"/>
+    <circle cx="10" cy="22" r="1.5" fill="#00a878"/>
+    <circle cx="22" cy="22" r="1.5" fill="#00a878"/>
+    <circle cx="16" cy="16" r="2" fill="#00d4aa"/>
+    
+    <!-- Neural connections -->
+    <path d="M10 10 L16 16" stroke="#00a878" stroke-width="0.5" opacity="0.6"/>
+    <path d="M22 10 L16 16" stroke="#00a878" stroke-width="0.5" opacity="0.6"/>
+    <path d="M10 22 L16 16" stroke="#00a878" stroke-width="0.5" opacity="0.6"/>
+    <path d="M22 22 L16 16" stroke="#00a878" stroke-width="0.5" opacity="0.6"/>
+  </g>
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0066cc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004d99;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

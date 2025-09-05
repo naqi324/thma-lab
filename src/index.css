@@ -2,21 +2,59 @@
    Design tokens (light)
    ========= */
 :root {
-  --bg: #fafafa;
+  /* Healthcare-optimized color palette */
+  --bg: #f8fafb;
   --surface: #ffffff;
-  --text: #1f2328;
-  --muted: #5b6169;
-  --link: #2563eb;
-  --border: #e5e7eb;
-  --code-bg: #f6f8fa;
-  --shadow: 0 2px 10px rgba(0,0,0,0.06);
-  --radius: 14px;
-
-  /* Fluid type scale */
-  --fs-0: clamp(14px, 0.9rem, 16px);
-  --fs-1: clamp(18px, 1.1rem, 20px);
-  --fs-2: clamp(22px, 1.35rem, 26px);
-  --fs-3: clamp(28px, 1.7rem, 34px);
+  --text: #1a202c;
+  --text-secondary: #4a5568;
+  --muted: #718096;
+  --link: #0066cc;
+  --link-hover: #0052a3;
+  --border: #e2e8f0;
+  --code-bg: #f7fafc;
+  
+  /* Healthcare brand colors */
+  --primary: #0066cc;
+  --primary-dark: #004d99;
+  --secondary: #00a878;
+  --accent: #ff6b6b;
+  --success: #48bb78;
+  --warning: #ed8936;
+  --info: #4299e1;
+  
+  /* Enhanced shadows for depth */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Layout tokens */
+  --radius: 16px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  /* Fluid type scale - improved readability */
+  --fs-xs: clamp(12px, 0.75rem, 14px);
+  --fs-0: clamp(16px, 1rem, 18px);
+  --fs-1: clamp(20px, 1.25rem, 22px);
+  --fs-2: clamp(24px, 1.5rem, 28px);
+  --fs-3: clamp(32px, 2rem, 40px);
+  --fs-4: clamp(40px, 2.5rem, 48px);
+  
+  /* Spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
 }
 
 /* =========
@@ -24,14 +62,30 @@
    ========= */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0b0f14;
-    --surface: #0f1620;
-    --text: #e6edf3;
-    --muted: #9aa4b2;
-    --link: #58a6ff;
-    --border: #1f2a36;
-    --code-bg: #0f1b26;
-    --shadow: none;
+    --bg: #0f1419;
+    --surface: #1a1f2e;
+    --text: #e2e8f0;
+    --text-secondary: #a0aec0;
+    --muted: #718096;
+    --link: #63b3ed;
+    --link-hover: #90cdf4;
+    --border: #2d3748;
+    --code-bg: #1e2533;
+    
+    /* Healthcare brand colors - dark mode */
+    --primary: #63b3ed;
+    --primary-dark: #4299e1;
+    --secondary: #48bb78;
+    --accent: #fc8181;
+    --success: #68d391;
+    --warning: #f6ad55;
+    --info: #63b3ed;
+    
+    /* Dark mode shadows */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -49,33 +103,122 @@ body {
   font-size: var(--fs-0);
 }
 
-/* One centered column card */
+/* Enhanced main container with gradient background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40vh;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  z-index: -1;
+  opacity: 0.05;
+}
+
+/* Modern card design with subtle animation */
 main {
-  max-width: 900px;
-  margin: 2.2rem auto;
-  padding: 1.2rem;
+  max-width: 980px;
+  margin: var(--space-2xl) auto;
+  padding: var(--space-2xl);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
-/* Headings */
+/* Subtle hover effect for engagement */
+main:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Progress indicator bar */
+main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+/* Enhanced headings with better hierarchy */
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.25;
-  margin: 1.6rem 0 0.8rem;
-  font-weight: 650;
+  margin: var(--space-xl) 0 var(--space-md);
+  font-weight: 700;
+  color: var(--text);
+  transition: color var(--transition-fast);
 }
-h1 { font-size: var(--fs-3); letter-spacing: -0.02em; }
-h2 { font-size: var(--fs-2); }
-h3 { font-size: var(--fs-1); }
+
+h1 { 
+  font-size: var(--fs-3); 
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+h2 { 
+  font-size: var(--fs-2); 
+  color: var(--text);
+  position: relative;
+  padding-bottom: var(--space-sm);
+  margin-top: var(--space-2xl);
+}
+
+h3 { 
+  font-size: clamp(22px, 1.375rem, 26px);
+  color: var(--text);
+  font-weight: 600;
+  margin-top: var(--space-xl);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-xs);
+}
+
+h4 {
+  font-size: clamp(20px, 1.25rem, 24px);
+  color: var(--text);
+  font-weight: 600;
+  margin-top: var(--space-lg);
+}
+
+h5 {
+  font-size: clamp(18px, 1.125rem, 20px);
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: var(--space-lg);
+}
+
+h6 {
+  font-size: clamp(16px, 1rem, 18px);
+  color: var(--text);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: var(--space-md);
+}
 
 /* Paragraph rhythm */
 p, ul, ol, blockquote, pre, table { margin: 1rem 0; }
 
 /* Links */
-a { color: var(--link); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { 
+  color: var(--link); 
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+a:hover { 
+  text-decoration: underline;
+  color: var(--link-hover);
+}
 
 /* =========
    Media: images, videos, iframes
@@ -102,21 +245,32 @@ main :where(img, video, iframe) {
 }
 
 /* =========
-   Code blocks & inline code
+   Enhanced code blocks & inline code
    ========= */
 pre {
   background: var(--code-bg);
-  padding: 1rem 1.1rem;
-  border-radius: 10px;
+  padding: var(--space-lg) var(--space-xl);
+  border-radius: var(--radius-md);
   overflow: auto;
   border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: box-shadow var(--transition-base);
 }
+
+pre:hover {
+  box-shadow: var(--shadow);
+}
+
 code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 0.95em;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.9em;
   background: var(--code-bg);
-  padding: 0.15em 0.35em;
-  border-radius: 6px;
+  padding: 0.2em 0.4em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  color: var(--primary);
+  font-weight: 500;
 }
 
 /* Content-specific polish */
@@ -171,47 +325,215 @@ code {
 
 .copy-btn {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--muted);
+  top: var(--space-sm);
+  right: var(--space-sm);
+  font-size: 0.875rem;
+  padding: var(--space-xs) var(--space-md);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(var(--surface), var(--surface)) padding-box,
+              linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+  color: var(--primary);
   cursor: pointer;
-  transition: background 0.2s;
-}
-.copy-btn:hover {
-  background: var(--link);
-  color: #fff;
+  font-weight: 600;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Put this in src/index.css (near your existing styles) */
-.codeblock {
-  position: relative;         /* anchor for the button */
+.copy-btn:hover {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) padding-box,
+              linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
+
+.copy-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Enhanced codeblock styling */
+.codeblock {
+  position: relative;
+  margin: var(--space-lg) 0;
+}
+
 .codeblock .copy-btn {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--muted);
+  top: var(--space-sm);
+  right: var(--space-sm);
+  font-size: 0.875rem;
+  padding: var(--space-xs) var(--space-md);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(var(--surface), var(--surface)) padding-box,
+              linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+  color: var(--primary);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  z-index: 1;
+  font-weight: 600;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+  z-index: 10;
 }
+
 .codeblock .copy-btn:hover {
-  background: var(--link);
-  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) padding-box,
+              linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.codeblock .copy-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .details-code {
   position: relative; /* so the button can be positioned inside */
+}
+
+/* Enhanced details/summary styling for better UX */
+details {
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-md);
+  padding: 0;
+  margin: var(--space-lg) 0;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add animated gradient border effect */
+details::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--primary), var(--secondary), var(--primary));
+  border-radius: var(--radius-md);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+details:hover::before {
+  opacity: 0.3;
+}
+
+details:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+details[open] {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
+}
+
+details[open]::before {
+  opacity: 0.2;
+}
+
+details summary {
+  padding: var(--space-md) var(--space-lg);
+  background: linear-gradient(135deg, var(--code-bg), var(--surface));
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  color: var(--primary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+/* Remove default arrow */
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Add custom expand/collapse indicator with icon */
+details summary::after {
+  content: '⊕';
+  font-size: 1.25rem;
+  color: var(--primary);
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+details[open] summary::after {
+  content: '⊖';
+  background: var(--primary);
+  color: white;
+  transform: rotate(180deg);
+}
+
+/* Add "Click to expand" hint with icon */
+details summary::before {
+  content: '📋 Click to view ';
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-weight: normal;
+  margin-right: 0.5rem;
+  opacity: 0.9;
+}
+
+details[open] summary::before {
+  content: '📋 Click to hide ';
+}
+
+/* Hover effects for summary */
+details summary:hover {
+  background: linear-gradient(135deg, var(--surface), var(--code-bg));
+  padding-left: calc(var(--space-lg) + 4px);
+}
+
+/* Content area styling */
+details > *:not(summary) {
+  padding: var(--space-lg);
+  border-top: 1px solid var(--border);
+}
+
+/* Smooth animation for opening/closing */
+details[open] > *:not(summary) {
+  animation: slideDown var(--transition-base) ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Special styling for code blocks inside details */
+details pre {
+  margin: 0;
+  border: none;
+  box-shadow: none;
 }
 
 /* highlight.js block wrapper already outputs .hljs */
@@ -240,7 +562,144 @@ blockquote {
 }
 
 /* =========
-   Utility: nicer spacing for lists with checkboxes
+   Enhanced lists with visual indicators
    ========= */
-li { margin: 0.35rem 0; }
-input[type="checkbox"][disabled] { transform: translateY(1px); margin-right: 0.5rem; }
+li { 
+  margin: var(--space-sm) 0;
+  transition: color var(--transition-fast);
+}
+
+li:hover {
+  color: var(--primary);
+}
+
+/* Styled checkboxes */
+input[type="checkbox"][disabled] { 
+  transform: translateY(1px); 
+  margin-right: var(--space-sm);
+  accent-color: var(--primary);
+}
+
+/* =========
+   Modern UI Components
+   ========= */
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background: var(--primary);
+  color: white;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: var(--radius);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: var(--radius);
+  border: 3px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Enhanced numbered lists - preserve natural numbering for main content */
+.content > ol {
+  padding-left: 2rem;
+  margin: var(--space-lg) 0;
+}
+
+.content > ol > li {
+  margin: var(--space-md) 0;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+/* Style nested ordered lists differently to avoid confusion */
+.content ol ol {
+  list-style-type: lower-alpha;
+  padding-left: 1.5rem;
+}
+
+.content ol ol ol {
+  list-style-type: lower-roman;
+}
+
+/* Add visual enhancement to list markers */
+.content ol > li::marker {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Loading animation placeholder */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.loading-skeleton {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%);
+  background-size: 1000px 100%;
+  border-radius: var(--radius-sm);
+  height: 1.2em;
+  margin: var(--space-sm) 0;
+}
+
+/* Enhanced focus states for accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  main {
+    margin: var(--space-lg) var(--space-md);
+    padding: var(--space-lg);
+  }
+  
+  .content ol > li {
+    padding-left: 2.5rem;
+  }
+}
+
+/* Print styles for healthcare documentation */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  main {
+    box-shadow: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .copy-btn {
+    display: none;
+  }
+  
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+}

@@ -1,9 +1,9 @@
-# Building Healthcare Gen AI Chat Bots with Amazon Bedrock in SageMaker Unified
+# Building Healthcare Gen AI Chat Bots<br>with Amazon Bedrock in SageMaker Unified
 
 ## Chat Bots We Will Build
 
-1. Formulary & Patient Education bot, powered by **Palmyra X5**
-2. Biomedical/IT Troubleshooting agentic bot, powered by **Nova Lite**
+1. Formulary & Patient Education bot, powered by **Writer Palmyra X5**
+2. Biomedical/IT Troubleshooting agentic bot, powered by **Amazon Nova Lite**
 
 ---
 
@@ -25,6 +25,9 @@
 
 #### System prompt
 
+> **What is a System Prompt?**  
+> A system prompt is the initial instruction set that defines how your AI assistant should behave, communicate, and respond to users. Think of it as giving your AI assistant a job description and personality guide. It sets boundaries for what the AI should and shouldn't do, establishes the tone of communication (like speaking at a 6th-8th grade reading level for patient education), and ensures consistent, safe responses aligned with your healthcare organization's policies.
+
 1. In the *Enter a system prompt* field, enter the following:
 
 ```text
@@ -44,6 +47,9 @@ Output
 2. Click the *Save* button in the top right.
 
 #### Add examples
+
+> **Why Add User Input and Model Response Examples?**  
+> Examples serve as training scenarios that teach your AI assistant how to handle specific situations correctly. By providing sample conversations (both appropriate responses and proper refusals), you're creating a reference library that helps the AI understand your expectations. This is especially critical in healthcare, where the AI must know when to provide educational information versus when to refuse requests for individualized medical advice that could be harmful.
 
 1. Click the *Add example* link to add the following examples.
 ![Add Example](/images/add-example.png)
@@ -86,6 +92,9 @@ Refusal + reason: educational only; cannot provide individualized dosing; advise
 
 #### Inference parameters
 
+> **Understanding Inference Parameters**  
+> Inference parameters control how creative or conservative your AI assistant's responses will be. **Temperature** (0.3 in our case) controls randomness: lower values mean more predictable, consistent responses, which is crucial for healthcare information. **Top P** (0.9) limits the AI's word choices to the most probable options, preventing unusual or inappropriate language. **Maximum length** (2048) sets how long responses can be, ensuring the AI provides complete answers without being overly verbose.
+
 1. We are now going to assign the following settings in the *Inference parameters* section.
 
 2. Click the *Save* button in the top right after setting the parameters.
@@ -99,32 +108,49 @@ Refusal + reason: educational only; cannot provide individualized dosing; advise
 
 #### Data
 
+> **What is a Bedrock Knowledge Base?**  
+> A Knowledge Base is your AI's reference library. It is a collection of your organization's documents, policies, and information that the AI can search through to provide accurate, up-to-date answers. Instead of relying solely on the AI's general training, a Knowledge Base allows your assistant to access your specific formulary data, clinical guidelines, or device manuals. This ensures responses are grounded in your organization's actual policies and procedures, dramatically reducing errors and improving relevance for your healthcare teams.
+
 Choose *Create new Knowledge Base*
 
 ##### Knowledge Base details
 
 1. Name = `formulary-kb-YOUR-INITIALS`
 2. Description = `Knowledge base for Formulary App`
-3. Project data sources:
-    a. Select a data source = `S3 (Default)`  = `S3 (project.s3_default_folder)`
+3. Under *Select data source type*, choose *Project data sources*, then proceed with the following:
+   
+    a. From the drop down for *Select a data source*, choose `S3 (Default)`
+    
     b. Under S3 URI, Click *Browse*
+    
     c. Click *thma-lab*
+    
     d. Select *formulary-kb.csv*
-4. Configurations
+
+4. Configurations:
+   
     a. Embeddings model = `Embed English`
+    
     b. Vector store = `Vector engine for Amazon OpenSearch Serverless`
 5. Click *Create*
 6. Back under *Select Knowledge Base*, choose *formulary-kb*. (This is the same as the knowledge base you just created.)
 
 #### Guardrails
 
+> **Why Are Bedrock Guardrails Important?**  
+> Guardrails act as safety barriers that prevent your AI from providing inappropriate or harmful content. They filter out topics you've defined as off-limits and can detect attempts to manipulate the AI into unsafe behavior. 
+
 1. Choose *Create new guardrail*
 2. Guardrail name = `formulary-guard-YOUR-INITIALS`
 3. Choose *Use advanced filters*
-4. Choose *Denied topics*
+4. Choose *Denied topics*:
+   
     a. Choose *Add topic*
+    
     b. Name = `dx`
+    
     c. Definition for topic = `Diagnosis, diagnoses, treatment plans, individual dosing advice`
+    
     d. Choose *Save*
 5. Choose *Create*
 6. Back under *Guardrails*, choose *formulary-guard* from the dropdown. (This is the same as the guardrail you just created.)
@@ -133,46 +159,37 @@ Choose *Create new Knowledge Base*
 #### UI
 
 1. Enter this for *Hint text for empty chat*:
-
 ```text
 Hi! I'm your Formulary Chat Assistant!
 ```
-
 2. Choose *Edit* under *Quick-start prompts*
 3. Quick-start prompt 1:
-
 ```text
 Which GLP‑1 is preferred on formulary and who qualifies?
 ```
-
 4. Quick-start prompt 2:
-
 ```text
 Plain‑language warfarin discharge teaching (5 bullets).
 ```
-
 5. Quick-start prompt 3:
-
 ```text
 Renal dosing considerations for apixaban—summarize our policy with citations.
 ```
-
 6. Click *Back to configs*
-
 ![Back to configs](/images/back-to-configs.png)
-
 7. Click the *Save* button now that we've added the quick-start prompts.
 
 ### Review Sharing & Export Options
+
+> **What is CDK Export Capability?**  
+> CDK (Cloud Development Kit) export allows you to package your entire AI application, including all its configurations, prompts, guardrails, and settings, into code that can be deployed across different environments. This means once you've built and tested your AI assistant, you can export it and deploy identical copies to other departments, hospitals, or regions without rebuilding from scratch. It ensures consistency, speeds up deployment, and maintains compliance standards across your entire organization.
 
 1. Click *Save*
 2. Choose *Deploy*
 3. Alias name = `formulary-app`
 4. Choose *Deploy*
 5. Click three dots, next to *Deploy*
-
 ![Three dots](/images/three-dots.png)
-
 6. Click *Export* from the dropdown menu to see how the app can now be downloaded and then deployed.
 7. Click *Cancel*
 
@@ -183,10 +200,8 @@ Renal dosing considerations for apixaban—summarize our policy with citations.
 
 1. Click *My Apps* in the left menu under *Asset gallery*.
 2. Click *Create app* and select *Chat agent app*
-
 ![Create chat agent app](/images/create-app.png)
-
-3. Rename the app `Biomed‑IT Agent YOUR-INITIALS`.
+3. Name the app `Biomed‑IT Agent YOUR-INITIALS`. Make sure you actually type this out and not try to paste into this field.
 
 ### Configurations
 
@@ -198,7 +213,6 @@ Renal dosing considerations for apixaban—summarize our policy with citations.
 #### System prompt
 
 1. In the *Enter a system prompt* field, enter the following:
-
 ```text
 You are a biomedical/IT support assistant. Use the knowledge base FIRST. When additional details are needed, you MAY call available functions; summarize tool results and include citations.
 
@@ -217,13 +231,11 @@ Output
 3) Evidence: doc_id — title — URL + any tool outputs used.
 
 ```
-
 2. Click the *Save* button in the top right.
 
 #### Add examples
 
 1. Click the *Add example* link to add the following examples.
-
 2. Click the *Save* button in the top right after creating each of the examples.
 
 
@@ -240,8 +252,6 @@ Infusion pump is alarming 'Occlusion'. Nurse checked the bag is full. What next?
 
 ```text
 Provide a 6-step checklist: inspect for kinks/clamps, check infiltration, flush if policy allows, verify pressure limit, replace tubing/set, then escalate to biomed if unresolved.
-
-Evidence: S2-01 — Infusion Pump — Occlusion Alarm Troubleshooting
 ```
 
 
@@ -262,28 +272,9 @@ Expected summary: "Below par (3/6). Drafted restock note with unit and device ID
 ```
 
 
-##### Example 3
-
-*User Input*
-
-```text
-Open a High priority ticket for recurring NIBP cuff errors on 4B; include device id nibp-200 and steps tried.
-```
-
-
-*Model response*
-
-```text
-Model behavior: Calls POST /helpdesk/tickets with JSON payload; returns ticket_id (e.g., TCK-4231).
-
-Expected summary: "Ticket TCK-4231 created; includes unit 4B, device nibp-200, steps attempted, and recommendation to run leak test."
-```
-
-
 #### Inference parameters
 
 1. We are now going to assign the following settings in the *Inference parameters* section.
-
 2. Click the *Save* button in the top right after setting the parameters.
 
 
@@ -295,20 +286,26 @@ Expected summary: "Ticket TCK-4231 created; includes unit 4B, device nibp-200, s
 
 #### Data
 
-1. Uncheck `formulary-kb`
-2. Choose *Create new Knowledge Base*
+Choose *Create new Knowledge Base*
 
 ##### Knowledge Base details
 
 1. Name = `device-kb-YOUR-INITIALS`
 2. Description = `Knowledge base for Bio-IT app`
-3. Project data sources:
-    a. Select a data source = `S3 (Default)`  = `S3 (project.s3_default_folder)`
+3. Under *Select data source type*, choose *Project data sources*, then proceed with the following:
+   
+    a. From the drop down for *Select a data source*, choose `S3 (Default)`
+    
     b. Under S3 URI, Click *Browse*
+    
     c. Click *thma-lab*
+    
     d. Select *device-kb.csv*
-4. Configurations
+
+4. Configurations:
+   
     a. Embeddings model = `Embed English`
+    
     b. Vector store = `Vector engine for Amazon OpenSearch Serverless`
 5. Click *Create*
 6. Back under *Select Knowledge Base*, choose *device-kb*
@@ -320,17 +317,29 @@ Choose *formulary-guard*
 
 #### Functions
 
+> **What Are Functions?**  
+> Functions enable your AI to take actions beyond just answering questions. In Bedrock, functions allow your AI app to interact with your hospital's systems, look up real-time information, and create tickets or orders. This is called "agentic" development because the AI becomes an active agent that can perform tasks on behalf of users. Functions connect your AI to APIs and databases, transforming it from a passive Q&A bot into an intelligent assistant that can accomplish real work within safety parameters you define.
+
+We will now add agentic functions to the app. You have the option of using some pre-built functions, or building them on your own. 
+
+##### Use Pre-built Functions
+
+1. Under functions, select both `device_lookup` and `helpdesk_ticket`
+![Select functions](/images/select-functions.png)
+2. Click the *Save* button in the top right to save your progress.
+
+
+##### Create Functions
+
 Click *Create new function*
 
 ![Create new function](/images/create-function.png)
 
-##### Create function
 
 ###### helpdesk_ticket function
 
 1. Assign this *Function name* = `helpdesk_ticket_YOUR_INITIALS`
 2. Paste this in for the *Function schema:*
-
 <details>
 
 <summary>helpdesk_ticket function schema</summary>
@@ -493,8 +502,6 @@ Click *Create new function*
   }
 }
 ```
-
-
 </details>
 
 3. Authentication method = `Api keys (Max. 2 keys)`
@@ -509,7 +516,6 @@ Click *Create new function*
 1. Click *Create new function* again
 2. Assign this *Function name* = `device_lookup_YOUR_INITIALS`
 3. Paste this *Function schema*:
-
 <details>
 
 <summary>device_lookup function schema</summary>
@@ -660,7 +666,6 @@ Click *Create new function*
   }
 }
 ```
-
 </details>
 
 3. Authentication method = `Api keys (Max. 2 keys)`
@@ -669,42 +674,43 @@ Click *Create new function*
 6. Key value = `7R0ltfmKbL7i8Pj5JJbc2a5lgatIBYMr2B5lCxRi`
 7. Click *Create*
 8. Back under functions, select both `device_lookup` and `helpdesk_ticket`
+![Select functions](/images/select-functions.png)
 9. Click the *Save* button in the top right to save both functions.
 
-![Select functions](/images/select-functions.png)
 
 #### UI
 
 1. Enter this for *Hint text for empty chat*:
-
 ```text
 Hi! I'm your Bio IT Device Assistant!
 ```
-
 2. Choose *Edit* under *Quick-start prompts*
 3. Quick-start prompt 1:
-
 ```text
 SpO₂ probe reading drops—what fixes should I try first? When do I escalate?
 ```
-
 4. Quick-start prompt 2:
-
 ```text
 Are we below par level for SpO₂ probes in ICU East? If yes, draft a restock note.
 ```
-
 5. Quick-start prompt 3:
-
 ```text
 Open a High priority ticket for a recurring NIBP cuff error on unit 4B and summarize what info you sent.
 ```
-
 6. Click *Back to configs*
-
 ![Back to configs](/images/back-to-configs.png)
-
 7. Click the *Save* button now that we've added the quick-start prompts.
 
+
+### Review Sharing & Export Options
+
+1. Click *Save*
+2. Choose *Deploy*
+3. Alias name = `biomed-it-app`
+4. Choose *Deploy*
+5. Click three dots, next to *Deploy*
+![Three dots](/images/three-dots.png)
+6. Click *Export* from the dropdown menu to see how the app can now be downloaded and then deployed.
+7. Click *Cancel*
 
 ---
