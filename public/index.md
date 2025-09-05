@@ -4,7 +4,6 @@
 
 1. Formulary & Patient Education bot, powered by **Palmyra X5**
 2. Biomedical/IT Troubleshooting agentic bot, powered by **Nova Lite**
-3. Clinical SOP Q&A bot, powered by **Claude Sonnet 4.0**
 
 ---
 
@@ -13,15 +12,20 @@
 1. Within [Amazon SageMaker Unified](https://dzd_bv47inn29chvps.sagemaker.us-west-2.on.aws/home), under **Build**, where it says *Generative AI app development with Amazon Bedrock*, choose *Build chat agent*.
 ![Build chat agent button](/images/unified-build-chat-agent.png)
 2. When prompted to select a project, choose `thma-lab` and click continue.
-3. On the new screen, rename the app: `Formulary Assistant **Initials**`.
+3. On the new screen, rename the app: `Formulary Assistant YOUR-INITIALS`.
 
 ### Configurations
 
 #### Model
 
-**Palmyra X5**
+1. Choose **Palmyra X5** from the dropdown.
+2. Click the *Save* button in the top right. Make sure to do this periodically over the course of the lab.
+![Save button](/images/save-button.png)
+
 
 #### System prompt
+
+1. In the *Enter a system prompt* field, enter the following:
 
 ```text
 You are a pharmacy assistant for formulary questions and patient‑friendly education. Use ONLY the knowledge base and cite doc_id and title.
@@ -35,11 +39,15 @@ Tone
 - Plain language at ~6th–8th grade reading level.
 
 Output
-- 4–6 concise bullets plus “Evidence” with doc_id — title — URL.
+- 4–6 concise bullets plus "Evidence" with doc_id — title — URL.
 ```
-
+2. Click the *Save* button in the top right.
 
 #### Add examples
+
+1. Click the *Add example* link to add the following examples.
+
+2. Click the *Save* button in the top right after creating each of the examples.
 
 ##### Example 1
 
@@ -77,6 +85,11 @@ Refusal + reason: educational only; cannot provide individualized dosing; advise
 
 #### Inference parameters
 
+1. We are now going to assign the following settings in the *Inference parameters* section.
+
+2. Click the *Save* button in the top right after setting the parameters.
+
+
 ##### Randomness and diversity
 
 - Temperature = 0.3
@@ -89,7 +102,7 @@ Choose *Create new Knowledge Base*
 
 ##### Knowledge Base details
 
-1. Name = `formulary-kb-initials`
+1. Name = `formulary-kb-YOUR-INITIALS`
 2. Description = `Knowledge base for Formulary App`
 3. Project data sources:
     a. Select a data source = `S3 (Default)`  = `S3 (project.s3_default_folder)`
@@ -100,12 +113,12 @@ Choose *Create new Knowledge Base*
     a. Embeddings model = `Embed English`
     b. Vector store = `Vector engine for Amazon OpenSearch Serverless`
 5. Click *Create*
-6. Back under *Select Knowledge Base*, choose *formulary-kb*
+6. Back under *Select Knowledge Base*, choose *formulary-kb*. (This is the same as the knowledge base you just created.)
 
 #### Guardrails
 
 1. Choose *Create new guardrail*
-2. Guardrail name = `formulary-guard`
+2. Guardrail name = `formulary-guard-YOUR-INITIALS`
 3. Choose *Use advanced filters*
 4. Choose *Denied topics*
     a. Choose *Add topic*
@@ -113,10 +126,12 @@ Choose *Create new Knowledge Base*
     c. Definition for topic = `Diagnosis, diagnoses, treatment plans, individual dosing advice`
     d. Choose *Save*
 5. Choose *Create*
+6. Back under *Guardrails*, choose *formulary-guard* from the dropdown. (This is the same as the guardrail you just created.)
+7. Click the *Save* button in the top right after selecting your guardrail.
 
 #### UI
 
-1. Hint text for empty chat:
+1. Enter this for *Hint text for empty chat*:
 
 ```text
 Hi! I'm your Formulary Chat Assistant!
@@ -145,6 +160,8 @@ Renal dosing considerations for apixaban—summarize our policy with citations.
 
 ![Back to configs](/images/back-to-configs.png)
 
+7. Click the *Save* button now that we've added the quick-start prompts.
+
 ### Review Sharing & Export Options
 
 1. Click *Save*
@@ -155,12 +172,12 @@ Renal dosing considerations for apixaban—summarize our policy with citations.
 
 ![Three dots](/images/three-dots.png)
 
-5. Click *Export* from the drop down menu to see how the app can now be downloaded and then deployed.
-6. Click *Cancel*
+6. Click *Export* from the dropdown menu to see how the app can now be downloaded and then deployed.
+7. Click *Cancel*
 
 ---
 
-## App 2: Biomedical/IT Troubleshooting agentic bot
+## App 2: Biomedical/IT Troubleshooting Agentic Bot
 
 
 1. Click *My Apps* in the left menu under *Asset gallery*.
@@ -168,15 +185,18 @@ Renal dosing considerations for apixaban—summarize our policy with citations.
 
 ![Create chat agent app](/images/create-app.png)
 
-3. Rename the app `Biomed‑IT Agent`.
+3. Rename the app `Biomed‑IT Agent YOUR-INITIALS`.
 
 ### Configurations
 
 #### Model
 
-**Amazon Nova Lite**
+1. Choose **Amazon Nova Lite** from the dropdown.
+2. Click the *Save* button in the top right. Make sure to do this periodically over the course of the lab.
 
 #### System prompt
+
+1. In the *Enter a system prompt* field, enter the following:
 
 ```text
 You are a biomedical/IT support assistant. Use the knowledge base FIRST. When additional details are needed, you MAY call available functions; summarize tool results and include citations.
@@ -197,8 +217,14 @@ Output
 
 ```
 
+2. Click the *Save* button in the top right.
 
 #### Add examples
+
+1. Click the *Add example* link to add the following examples.
+
+2. Click the *Save* button in the top right after creating each of the examples.
+
 
 ##### Example 1
 
@@ -255,6 +281,11 @@ Expected summary: "Ticket TCK-4231 created; includes unit 4B, device nibp-200, s
 
 #### Inference parameters
 
+1. We are now going to assign the following settings in the *Inference parameters* section.
+
+2. Click the *Save* button in the top right after setting the parameters.
+
+
 ##### Randomness and diversity
 
 - Temperature = 0.3
@@ -268,7 +299,7 @@ Expected summary: "Ticket TCK-4231 created; includes unit 4B, device nibp-200, s
 
 ##### Knowledge Base details
 
-1. Name = `device-kb-initials`
+1. Name = `device-kb-YOUR-INITIALS`
 2. Description = `Knowledge base for Bio-IT app`
 3. Project data sources:
     a. Select a data source = `S3 (Default)`  = `S3 (project.s3_default_folder)`
@@ -280,6 +311,7 @@ Expected summary: "Ticket TCK-4231 created; includes unit 4B, device nibp-200, s
     b. Vector store = `Vector engine for Amazon OpenSearch Serverless`
 5. Click *Create*
 6. Back under *Select Knowledge Base*, choose *device-kb*
+7. Click the *Save* button in the top right after selecting your knowledge base.
 
 #### Guardrails
 
@@ -287,16 +319,16 @@ Choose *formulary-guard*
 
 #### Functions
 
-Click `Create new function`
+Click *Create new function*
 
 ![Create new function](/images/create-function.png)
 
 ##### Create function
 
-###### device_lookup function
+###### helpdesk_ticket function
 
-1. Function name = `helpdesk_ticket`
-2. Function schema:
+1. Assign this *Function name* = `helpdesk_ticket_YOUR_INITIALS`
+2. Paste this in for the *Function schema:*
 
 <details>
 
@@ -469,12 +501,13 @@ Click `Create new function`
 5. Key name = `x-api-key`
 6. Key value = `7R0ltfmKbL7i8Pj5JJbc2a5lgatIBYMr2B5lCxRi`
 7. Click *Create*
+8. Click the *Save* button in the top right to save this function.
 
 ###### device_lookup function
 
 1. Click *Create new function* again
-1. Function name = `device_lookup`
-2. Function schema:
+2. Assign this *Function name* = `device_lookup_YOUR_INITIALS`
+3. Paste this *Function schema*:
 
 <details>
 
@@ -627,7 +660,6 @@ Click `Create new function`
 }
 ```
 
-
 </details>
 
 3. Authentication method = `Api keys (Max. 2 keys)`
@@ -636,12 +668,13 @@ Click `Create new function`
 6. Key value = `7R0ltfmKbL7i8Pj5JJbc2a5lgatIBYMr2B5lCxRi`
 7. Click *Create*
 8. Back under functions, select both `device_lookup` and `helpdesk_ticket`
+9. Click the *Save* button in the top right to save both functions.
 
 ![Select functions](/images/select-functions.png)
 
 #### UI
 
-1. Hint text for empty chat:
+1. Enter this for *Hint text for empty chat*:
 
 ```text
 Hi! I'm your Bio IT Device Assistant!
@@ -669,5 +702,8 @@ Open a High priority ticket for a recurring NIBP cuff error on unit 4B and summa
 6. Click *Back to configs*
 
 ![Back to configs](/images/back-to-configs.png)
+
+7. Click the *Save* button now that we've added the quick-start prompts.
+
 
 ---
