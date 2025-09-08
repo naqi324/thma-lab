@@ -127,6 +127,20 @@ Choose *Create new Knowledge Base*
     
     d. Select *formulary-kb.csv*
 
+<details>
+<summary>📊 View formulary-kb.csv sample data</summary>
+
+| doc_id | title | text (excerpt) |
+|--------|-------|----------------|
+| S3-01 | Formulary — GLP-1 Agonists | Preferred: semaglutide weekly. Prior authorization: BMI ≥30 or BMI ≥27 with comorbidity... |
+| S3-02 | Patient Education — New Warfarin | Take at the same time daily; keep vitamin K intake steady; attend INR checks... |
+| S3-03 | Renal Dosing — Anticoagulants | Apixaban: reduce dose when 2 of 3 present—age ≥80, weight ≤60 kg, or SCr ≥1.5 mg/dL... |
+| S3-04 | Formulary — SGLT2 Inhibitors | Preferred: empagliflozin; avoid with eGFR <20 mL/min/1.73m²... |
+| S3-05 | Patient Education — Inhaler Technique | Exhale fully; seal lips; inhale slowly while pressing canister... |
+
+*Contains 20 total records with formulary guidelines and patient education content*
+</details>
+
 4. Configurations:
    
     a. Embeddings model = **Embed English**
@@ -301,6 +315,20 @@ Choose *Create new Knowledge Base*
     c. Click *thma-lab*
     
     d. Select *device-kb.csv*
+
+<details>
+<summary>📊 View device-kb.csv sample data</summary>
+
+| doc_id | title | text (excerpt) |
+|--------|-------|----------------|
+| S2-01 | Infusion Pump — Occlusion Alarm | Checklist: inspect for kinks or closed clamps; check for infiltration; flush line if policy allows... |
+| S2-02 | Vital Signs Monitor — SpO₂ Signal Loss | Ensure correct probe size and placement; warm extremity; remove nail polish... |
+| S2-03 | Syringe Pump Calibration | Verify syringe brand/size; run calibration routine per manual; document results... |
+| S2-06 | NIBP Cuff Error | Check hose/cuff integrity and size; reposition; run leak test; replace cuff... |
+| S2-18 | SpO₂ Probe Inventory | Maintain minimum par level of 6 per unit; trigger restock when on-hand < par... |
+
+*Contains 20 total records with biomedical device troubleshooting and IT operations procedures*
+</details>
 
 4. Configurations:
    
