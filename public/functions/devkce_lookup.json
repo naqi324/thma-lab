@@ -1,0 +1,144 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Device Lookup API (Mock via API Gateway)",
+    "version": "1.0.0",
+    "description": "Returns troubleshooting steps and inventory status for a biomedical device."
+  },
+  "servers": [
+    {
+      "url": "https://t1ba96kty9.execute-api.us-west-2.amazonaws.com/prod",
+      "description": "Your API Gateway invoke URL including stage, e.g., https://abc123.execute-api.us-east-1.amazonaws.com/prod"
+    }
+  ],
+  "paths": {
+    "/biomed/devices/{device_id}": {
+      "get": {
+        "operationId": "getDeviceById",
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Get device info and inventory status",
+        "description": "Fetch troubleshooting guidance and on-hand inventory vs par level for a specific device.",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "required": true,
+            "description": "Unique device identifier (for example: 'spo2-probe', 'nibp-200').",
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "unit",
+            "in": "query",
+            "required": false,
+            "description": "Clinical unit or location to evaluate inventory for (for example: 'ICU-East'). Defaults to 'Main' if omitted.",
+            "schema": {
+              "type": "string",
+              "default": "Main"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Device information successfully retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceInfo"
+                },
+                "examples": {
+                  "example": {
+                    "summary": "SpO2 probe in ICU-East",
+                    "value": {
+                      "device_id": "spo2-probe",
+                      "model": "SPO2-PROBE",
+                      "troubleshooting": [
+                        "Inspect for kinks or closed clamps",
+                        "Check for infiltration",
+                        "Flush line if policy allows",
+                        "Verify pressure limits",
+                        "Replace tubing if unresolved",
+                        "Escalate to biomed"
+                      ],
+                      "par_level": 6,
+                      "on_hand": 3,
+                      "unit": "ICU-East"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid parameters)."
+          },
+          "404": {
+            "description": "Device not found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DeviceInfo": {
+        "type": "object",
+        "description": "Troubleshooting guidance and inventory info for a device at a given unit.",
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "description": "The device identifier."
+          },
+          "model": {
+            "type": "string",
+            "description": "A human‑readable device model string derived from the identifier."
+          },
+          "troubleshooting": {
+            "type": "array",
+            "description": "Ordered troubleshooting steps to attempt safely.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "par_level": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Minimum desired on‑hand quantity for the unit."
+          },
+          "on_hand": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Current counted quantity on hand for the unit."
+          },
+          "unit": {
+            "type": "string",
+            "description": "Clinical unit or location name."
+          }
+        },
+        "required": [
+          "device_id",
+          "model",
+          "troubleshooting",
+          "par_level",
+          "on_hand",
+          "unit"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "API key issued from API Gateway Usage Plan."
+      }
+    }
+  }
+}

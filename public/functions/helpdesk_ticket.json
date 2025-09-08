@@ -1,0 +1,156 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Helpdesk Ticket API (Mock via API Gateway)",
+    "version": "1.0.0",
+    "description": "Creates a helpdesk ticket for biomedical or IT incidents with structured details."
+  },
+  "servers": [
+    {
+      "url": "https://t1ba96kty9.execute-api.us-west-2.amazonaws.com/prod",
+      "description": "Your API Gateway invoke URL including stage, e.g., https://abc123.execute-api.us-east-1.amazonaws.com/prod"
+    }
+  ],
+  "paths": {
+    "/helpdesk/tickets": {
+      "post": {
+        "operationId": "createHelpdeskTicket",
+        "tags": [
+          "Helpdesk"
+        ],
+        "summary": "Create a new helpdesk ticket",
+        "description": "Creates a ticket capturing category, summary, unit, priority, and optional device identifier.",
+        "requestBody": {
+          "required": true,
+          "description": "Ticket details used to create a new helpdesk record.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketCreateRequest"
+              },
+              "examples": {
+                "example": {
+                  "summary": "High priority NIBP cuff error on unit 4B",
+                  "value": {
+                    "category": "Biomed",
+                    "summary": "Recurring NIBP cuff error; leak test passed once then failed twice.",
+                    "unit": "4B",
+                    "priority": "High",
+                    "device_id": "nibp-200"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ticket successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                },
+                "examples": {
+                  "example": {
+                    "summary": "Created ticket",
+                    "value": {
+                      "ticket_id": "TCK-4231",
+                      "status": "Open",
+                      "created_at": "2025-08-31T12:00:00Z",
+                      "link": "https://mock.example/tickets/TCK-4231"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (missing or invalid fields)."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TicketCreateRequest": {
+        "type": "object",
+        "description": "Fields required to create a helpdesk ticket.",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Ticket category such as 'Biomed' or 'IT'.",
+            "minLength": 1
+          },
+          "summary": {
+            "type": "string",
+            "description": "Concise description of the issue and steps already taken.",
+            "minLength": 1
+          },
+          "unit": {
+            "type": "string",
+            "description": "Clinical unit or location where the problem occurs (for example: 'ICU-East', '4B')."
+          },
+          "priority": {
+            "type": "string",
+            "description": "Ticket urgency.",
+            "enum": [
+              "Low",
+              "Medium",
+              "High"
+            ]
+          },
+          "device_id": {
+            "type": "string",
+            "description": "Optional device identifier related to the incident."
+          }
+        },
+        "required": [
+          "category",
+          "summary",
+          "priority"
+        ]
+      },
+      "Ticket": {
+        "type": "object",
+        "description": "Response payload for a created helpdesk ticket.",
+        "properties": {
+          "ticket_id": {
+            "type": "string",
+            "description": "Server‑assigned ticket identifier (e.g., 'TCK-4231')."
+          },
+          "status": {
+            "type": "string",
+            "description": "Ticket status after creation (typically 'Open')."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC timestamp when the ticket was created."
+          },
+          "link": {
+            "type": "string",
+            "description": "URL to view or manage the ticket in the helpdesk system."
+          }
+        },
+        "required": [
+          "ticket_id",
+          "status",
+          "created_at"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "API key issued from API Gateway Usage Plan."
+      }
+    }
+  }
+}
