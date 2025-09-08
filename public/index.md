@@ -113,6 +113,9 @@ Refusal + reason: educational only; cannot provide individualized dosing; advise
 > **What is a Bedrock Knowledge Base?**  
 > A Knowledge Base is your AI's reference library. It is a collection of your organization's documents, policies, and information that the AI can search through to provide accurate, up-to-date answers. Instead of relying solely on the AI's general training, a Knowledge Base allows your assistant to access your specific formulary data, clinical guidelines, or device manuals. This ensures responses are grounded in your organization's actual policies and procedures, dramatically reducing errors and improving relevance for your healthcare teams.
 
+> **How RAG (Retrieval Augmented Generation) Works**
+RAG helps your AI give accurate answers by first looking up information in your documents, then using that specific information to respond. It's like giving your AI assistant a reference manual to check before answering, rather than relying on memory alone. This keeps responses accurate and based on your organization's actual policies.
+
 Choose *Create new Knowledge Base*
 
 ##### Knowledge Base details
@@ -147,13 +150,11 @@ Choose *Create new Knowledge Base*
    
     a. Embeddings model = **Embed English**
     
-    > Converts text into vectors for semantic retrieval from your knowledge base.
-    > Use "Embed English" for English content; choose multilingual embeddings if documents span languages.
+    > Embed converts your documents into a special format that captures meaning, not just words. This lets the AI find relevant information even when different terminology is used, like knowing that a question about "blood thinners" relates to documents about "warfarin" or "anticoagulants.".
     
     b. Vector store = **Vector engine for Amazon OpenSearch Serverless**
     
-    > Stores embedding vectors and metadata to power fast semantic retrieval.
-    > OpenSearch Serverless provides managed, scalable RAG without cluster operations.
+    > Amazon OpenSearch Serverless is a specialized database that stores and searches your documents by meaning rather than keywords. Think of it like a librarian who can find the right book based on concepts you describe, even if you don't know the exact title. It handles all the technical complexity automatically.
     
 5. Click *Create*
 6. Back under *Select Knowledge Base*, choose *formulary-kb*. (This is the same as the knowledge base you just created.)
@@ -343,14 +344,8 @@ Choose *Create new Knowledge Base*
 4. Configurations:
    
     a. Embeddings model = **Embed English**
-    
-    > Converts text into vectors for semantic retrieval from your knowledge base.
-    > Use "Embed English" for English content; choose multilingual embeddings if documents span languages.
-    
+        
     b. Vector store = **Vector engine for Amazon OpenSearch Serverless**
-    
-    > Stores embedding vectors and metadata to power fast semantic retrieval.
-    > OpenSearch Serverless provides managed, scalable RAG without cluster operations.
     
 5. Click *Create*
 6. Back under *Select Knowledge Base*, choose *device-kb*
@@ -767,6 +762,3 @@ Open a High priority ticket for a recurring NIBP cuff error on unit 4B and summa
 
 > The Biomed IT Device Monitor shows near‑real‑time API activity initiated by your agent. As you chat, the agent can call device and helpdesk APIs (via functions) to look up inventory, draft tickets, or take actions on your behalf, with information about those calls appearing here.
 
-- Understand agentic behavior: see when the assistant performs function calls (e.g., `GET /biomed/devices/...` or `POST /helpdesk/tickets`).
-- Verify end‑to‑end flow: confirm calls succeed (2xx) and respond quickly; troubleshoot 4xx/5xx if they occur.
-- Practice safe operations: use this view to validate that actions match the conversation and align with policy.
