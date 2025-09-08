@@ -6,6 +6,7 @@ import { CloudWatchLogsClient, FilterLogEventsCommand } from "@aws-sdk/client-cl
 
 const REGION = process.env.AWS_REGION || "us-west-2";
 const LOG_GROUP_NAME = process.env.LOG_GROUP_NAME || ""; // <- set in Amplify env
+const EXEC_LOG_GROUP_NAME = process.env.EXEC_LOG_GROUP_NAME || ""; // optional: execution logs for request bodies
 
 type ApiEvent = {
   id: string;
@@ -21,6 +22,7 @@ type ApiEvent = {
     responseLength?: number;
     integrationStatus?: string | number;
     integrationLatency?: number;
+    body?: string;
   };
 };
 
@@ -98,6 +100,53 @@ export const handler = async (event: any) => {
     out.sort((a, b) => a.ts - b.ts);
     const trimmed = out.slice(-limit);
     for (const ev of trimmed) redact(ev);
+
+    // If execution log group is configured, attempt to enrich with request bodies
+    if (EXEC_LOG_GROUP_NAME && trimmed.length) {
+      try {
+        const execSince = Math.max(0, since - 10000); // small lookback window
+        const exec = await cw.send(new FilterLogEventsCommand({
+          logGroupName: EXEC_LOG_GROUP_NAME,
+          startTime: execSince + 1,
+          interleaved: true,
+        }));
+        const lastReqByStream = new Map<string, string>();
+        const bodyByReq = new Map<string, string>();
+        const reStartA = /Starting execution for request: ([A-Za-z0-9-]+)/;
+        const reStartB = /Execution log for requestId: ([A-Za-z0-9-]+)/;
+        for (const ev of exec.events ?? []) {
+          const msg = ev.message ?? "";
+          const stream = ev.logStreamName || "";
+          let m = msg.match(reStartA) || msg.match(reStartB);
+          if (m && m[1]) {
+            lastReqByStream.set(stream, m[1]);
+            continue;
+          }
+          if (
+            msg.includes("Method request body before transformations:") ||
+            msg.includes("Method request body after transformations:") ||
+            msg.includes("Endpoint request body after transformations:")
+          ) {
+            const idx = msg.indexOf(":");
+            const raw = idx >= 0 ? msg.slice(idx + 1).trim() : msg.trim();
+            const rid = lastReqByStream.get(stream);
+            if (rid && raw) {
+              bodyByReq.set(rid, raw.slice(0, 4000)); // cap to 4KB
+            }
+          }
+        }
+        for (const ev of trimmed) {
+          if (ev.requestId && bodyByReq.has(ev.requestId)) {
+            const b = bodyByReq.get(ev.requestId)!;
+            const safe = scrub(b);
+            ev.meta = ev.meta || {};
+            ev.meta.body = safe;
+          }
+        }
+      } catch (e) {
+        // swallow enrichment errors; core feed should continue
+      }
+    }
 
     const body: any = { events: trimmed, nextSince: Math.max(maxTs, since) };
     if (debug) {

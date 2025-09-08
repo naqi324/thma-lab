@@ -14,6 +14,7 @@ type ApiEvent = {
     responseLength?: number;
     integrationStatus?: string | number;
     integrationLatency?: number;
+    body?: string;
   };
 };
 
@@ -143,9 +144,10 @@ export default function ApiGatewayLiveMonitor() {
             {expanded[e.id] && (
               <div id={`row-${e.id}`} className="thma-monitor__details">
                 <div className="grid">
-                  <div><label>Request ID</label><code>{e.requestId || "—"}</code></div>
                   <div><label>Client IP</label><code>{e.meta?.ip || "—"}</code></div>
                   <div><label>Resource</label><code>{e.meta?.resourcePath || "—"}</code></div>
+                  <div className="wide"><label>Request Body</label><pre className="body"><code>{e.meta?.body || "(not captured)"}</code></pre></div>
+                  <div><label>Request ID</label><code>{e.requestId || "—"}</code></div>
                   <div><label>Path</label><code>{e.meta?.path || e.request.path || "—"}</code></div>
                   <div><label>Integration</label><code>{String(e.meta?.integrationStatus ?? "—")}</code></div>
                   <div><label>Int. Latency</label><code>{e.meta?.integrationLatency ?? "—"} ms</code></div>
@@ -205,6 +207,8 @@ const css = `
 .thma-monitor__details .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .thma-monitor__details label{display:block;font-size:12px;color:#9ca3af}
 .thma-monitor__details code{display:block;background:#0002;padding:4px 6px;border-radius:6px;border:1px solid #8882;word-break:break-all}
+.thma-monitor__details .wide{grid-column:1/-1}
+.thma-monitor__details .body{background:#0002;color:inherit;border:1px solid #8882;border-radius:6px;padding:8px;white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto}
 .ts{opacity:.8}
 .method{font-weight:700}
 .m-get{color:#60a5fa}.m-post{color:#34d399}.m-put{color:#f59e0b}.m-delete{color:#f87171}
