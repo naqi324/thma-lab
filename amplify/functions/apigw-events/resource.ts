@@ -11,5 +11,6 @@ export const apigwEvents = defineFunction({
   // Forward Amplify environment variable into the Lambda's environment
   environment: {
     LOG_GROUP_NAME: process.env.LOG_GROUP_NAME ?? "",
+    EXEC_LOG_GROUP_NAME: process.env.EXEC_LOG_GROUP_NAME ?? "",
   },
 });
