@@ -4,6 +4,7 @@ import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
 // API Monitor removed; keep core app minimal
 
+import ApiGatewayLiveMonitor from "./components/ApiGatewayLiveMonitor";
 
 const md = new MarkdownIt({
   html: true,
@@ -264,7 +265,7 @@ return (
     </button>
 
     {/* Table of Contents Sidebar */}
-    <aside style={{
+    <aside className="toc" style={{
       position: 'fixed',
       top: 0,
       left: tocOpen ? 0 : '-320px',
@@ -278,72 +279,65 @@ return (
       overflowY: 'auto',
       padding: '80px 20px 20px'
     }}>
+      <style>{`
+        /* Scoped Table of Contents styles */
+        .toc .toc-link {
+          background: none;
+          border: none;
+          color: var(--text);
+          text-decoration: none;
+          font-size: 1rem;
+          cursor: pointer;
+          text-align: left;
+          width: 100%;
+          padding: 0.25rem 0;
+          transition: color var(--transition-fast);
+        }
+        .toc .toc-link:hover { color: var(--link-hover); text-decoration: underline; }
+        .toc .toc-sub { color: var(--muted); font-size: 0.95rem; }
+        .toc .toc-sublist { list-style: none; padding-left: 1rem; margin-top: 0.5rem; border-left: 2px solid var(--border); }
+        .toc .toc-subitem { position: relative; padding-left: 0.75rem; margin-bottom: 0.5rem; }
+        .toc .toc-subitem::before { content: ''; position: absolute; left: 0; top: 0.95em; width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
+        .toc .toc-subitem:hover::before { background: var(--link-hover); }
+      `}</style>
       <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--primary)' }}>Table of Contents</h2>
       <nav>
         <ul style={{ listStyle: 'none', padding: 0 }}>
           <li style={{ marginBottom: '0.75rem' }}>
-            <button onClick={() => scrollToHeading('chat-bots-we-will-build')} style={{ 
-              background: 'none', 
-              border: 'none', 
-              color: 'var(--text)', 
-              textDecoration: 'none', 
-              fontSize: '0.95rem', 
-              cursor: 'pointer',
-              textAlign: 'left',
-              width: '100%',
-              padding: '0.25rem 0'
-            }}>Chat Bots We Will Build</button>
+            <button className="toc-link" onClick={() => scrollToHeading('chat-bots-we-will-build')}>Chat Bots We Will Build</button>
           </li>
           <li style={{ marginBottom: '0.75rem' }}>
-            <button onClick={() => scrollToHeading('app-1-formulary-patient-education')} style={{ 
-              background: 'none', 
-              border: 'none', 
-              color: 'var(--text)', 
-              textDecoration: 'none', 
-              fontSize: '0.95rem', 
-              fontWeight: 600, 
-              cursor: 'pointer',
-              textAlign: 'left',
-              width: '100%',
-              padding: '0.25rem 0'
-            }}>App 1: Formulary & Patient Education</button>
-            <ul style={{ listStyle: 'none', paddingLeft: '1rem', marginTop: '0.5rem' }}>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('configurations')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>Configurations</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('model')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Model</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('system-prompt')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• System prompt</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('add-examples')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Add examples</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('inference-parameters')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Inference parameters</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('data')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Data</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('guardrails')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Guardrails</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('ui')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• UI</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('review-sharing-export-options')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>Review Sharing & Export Options</button></li>
+            <button className="toc-link" onClick={() => scrollToHeading('app-1-formulary-patient-education')} style={{ fontWeight: 600 }}>App 1: Formulary & Patient Education</button>
+            <ul className="toc-sublist">
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('configurations')}>Configurations</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('model')}>Model</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('system-prompt')}>System prompt</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('add-examples')}>Add examples</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('inference-parameters')}>Inference parameters</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('data')}>Data</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('guardrails')}>Guardrails</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('ui')}>UI</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('review-sharing-export-options')}>Review Sharing & Export Options</button></li>
             </ul>
           </li>
           <li style={{ marginBottom: '0.75rem' }}>
-            <button onClick={() => scrollToHeading('app-2-biomedicalit-troubleshooting-agentic-bot')} style={{ 
-              background: 'none', 
-              border: 'none', 
-              color: 'var(--text)', 
-              textDecoration: 'none', 
-              fontSize: '0.95rem', 
-              fontWeight: 600, 
-              cursor: 'pointer',
-              textAlign: 'left',
-              width: '100%',
-              padding: '0.25rem 0'
-            }}>App 2: Biomedical/IT Troubleshooting</button>
-            <ul style={{ listStyle: 'none', paddingLeft: '1rem', marginTop: '0.5rem' }}>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('configurations-1')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>Configurations</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('model-1')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Model</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('system-prompt-1')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• System prompt</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('add-examples-1')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Add examples</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('inference-parameters-1')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Inference parameters</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('data-1')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Data</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('guardrails-1')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Guardrails</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('functions')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• Functions</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('ui-1')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>• UI</button></li>
-              <li style={{ marginBottom: '0.5rem' }}><button onClick={() => scrollToHeading('review-sharing-export-options-1')} style={{ background: 'none', border: 'none', color: 'var(--muted)', textDecoration: 'none', fontSize: '0.875rem', cursor: 'pointer', textAlign: 'left', width: '100%' }}>Review Sharing & Export Options</button></li>
+            <button className="toc-link" onClick={() => scrollToHeading('app-2-biomedicalit-troubleshooting-agentic-bot')} style={{ fontWeight: 600 }}>App 2: Biomedical/IT Troubleshooting</button>
+            <ul className="toc-sublist">
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('configurations-1')}>Configurations</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('model-1')}>Model</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('system-prompt-1')}>System prompt</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('add-examples-1')}>Add examples</button></li>
+              
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('inference-parameters-1')}>Inference parameters</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('data-1')}>Data</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('guardrails-1')}>Guardrails</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('functions')}>Functions</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('ui-1')}>UI</button></li>
+              <li className="toc-subitem"><button className="toc-link toc-sub" onClick={() => scrollToHeading('review-sharing-export-options-1')}>Review Sharing & Export Options</button></li>
             </ul>
+          </li>
+          <li style={{ marginBottom: '0.75rem' }}>
+            <button className="toc-link" onClick={() => scrollToHeading('biomedit-device-monitor')}>BiomedIT Device Monitor</button>
           </li>
         </ul>
       </nav>
@@ -397,7 +391,14 @@ return (
       </button>
     )}
 
-    <main style={{ paddingTop: '20px' }}>
+    <main style={{ paddingTop: '20px', position: 'relative' }}>
+      {/* Minimal AWS logo, non-intrusive */}
+      <div className="aws-logo" aria-label="AWS logo" title="AWS" style={{ position: 'absolute', top: '12px', right: '12px', color: 'var(--text)', opacity: 0.9 }}>
+        <svg width="64" height="24" viewBox="0 0 90 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <text x="0" y="18" fill="currentColor" fontFamily="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" fontWeight="700" fontSize="18">AWS</text>
+          <path d="M35 24c8 3.2 18 2.8 26-1.6" stroke="var(--aws-gold)" strokeWidth="2.6" strokeLinecap="round" fill="none"/>
+        </svg>
+      </div>
       {html === "Loading…" ? (
         <div style={{ padding: '2rem', textAlign: 'center' }}>
           <div style={{
@@ -414,6 +415,7 @@ return (
       ) : (
         <div className="content" dangerouslySetInnerHTML={{ __html: html }} />
       )}
+      <ApiGatewayLiveMonitor />
     </main>
 
     {/* Add spinning animation */}

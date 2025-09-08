@@ -2,25 +2,26 @@
    Design tokens (light)
    ========= */
 :root {
-  /* Healthcare-optimized color palette */
-  --bg: #f8fafb;
+  /* AWS-inspired base palette */
+  --bg: #f7f8fa;
   --surface: #ffffff;
   --text: #1a202c;
   --text-secondary: #4a5568;
-  --muted: #718096;
-  --link: #0066cc;
-  --link-hover: #0052a3;
-  --border: #e2e8f0;
-  --code-bg: #f7fafc;
+  --muted: #6b7280;
+  --link: #0972D3;         /* AWS console blue */
+  --link-hover: #07539b;
+  --border: #e5e7eb;
+  --code-bg: #f8fafc;
   
-  /* Healthcare brand colors */
-  --primary: #0066cc;
-  --primary-dark: #004d99;
-  --secondary: #00a878;
-  --accent: #ff6b6b;
-  --success: #48bb78;
+  /* AWS brand colors */
+  --primary: #ff9900;      /* AWS orange */
+  --primary-dark: #cc7a00;
+  --secondary: #232f3e;    /* AWS navy */
+  --accent: #00a1c9;
+  --success: #2e7d32;
   --warning: #ed8936;
-  --info: #4299e1;
+  --info: #0972D3;
+  --aws-gold: #cc7a00;     /* darker gold for light mode */
   
   /* Enhanced shadows for depth */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -63,23 +64,24 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0f1419;
-    --surface: #1a1f2e;
-    --text: #e2e8f0;
-    --text-secondary: #a0aec0;
-    --muted: #718096;
-    --link: #63b3ed;
-    --link-hover: #90cdf4;
-    --border: #2d3748;
-    --code-bg: #1e2533;
+    --surface: #111827;
+    --text: #e5e7eb;
+    --text-secondary: #9ca3af;
+    --muted: #9ca3af;
+    --link: #66b3ff;
+    --link-hover: #99ccff;
+    --border: #273244;
+    --code-bg: #111827;
     
-    /* Healthcare brand colors - dark mode */
-    --primary: #63b3ed;
-    --primary-dark: #4299e1;
-    --secondary: #48bb78;
-    --accent: #fc8181;
-    --success: #68d391;
+    /* AWS brand colors - dark mode */
+    --primary: #ffb84d;      /* lighter AWS orange for dark bg */
+    --primary-dark: #ff9900;
+    --secondary: #394a5a;    /* softened navy */
+    --accent: #22b8cf;
+    --success: #34d399;
     --warning: #f6ad55;
-    --info: #63b3ed;
+    --info: #66b3ff;
+    --aws-gold: #ffb84d;     /* brighter gold for dark mode */
     
     /* Dark mode shadows */
     --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
@@ -134,6 +136,8 @@ main:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
+
+/* (intentionally left minimal — global AWS styling applied via tokens) */
 
 /* Progress indicator bar */
 main::before {

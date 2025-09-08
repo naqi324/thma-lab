@@ -1,0 +1,10 @@
+{
+  "name": "apigw-events",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.637.0"
+  }
+}
+
