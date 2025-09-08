@@ -8,5 +8,8 @@ export const apigwEvents = defineFunction({
   name: "apigw-events",
   runtime: 20,          // Node.js 20
   timeoutSeconds: 10,
-  // No secrets or values here; env is read in the handler via process.env.LOG_GROUP_NAME
+  // Forward Amplify environment variable into the Lambda's environment
+  environment: {
+    LOG_GROUP_NAME: process.env.LOG_GROUP_NAME ?? "",
+  },
 });
