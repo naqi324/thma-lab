@@ -19,12 +19,11 @@
 #### Model
 
 1. Choose **Palmyra X5** from the dropdown.
+
+> Palmyra X5 (Writer) is an enterprise LLM designed for dependable, grounded outputs and controllable behavior in mission‑critical workflows. It excels at instruction following, summarization, and extraction with a focus on accuracy, safety, and compliance in regulated settings.
+
 2. Click the *Save* button in the top right. Make sure to do this periodically over the course of the lab.
 ![Save button](/images/save-button.png)
-
-> Palmyra X5 (Writer) is an enterprise LLM designed for dependable, grounded outputs and controllable behavior in mission‑critical workflows.
-> It excels at instruction following, summarization, and extraction with a focus on accuracy, safety, and compliance in regulated settings.
-
 
 #### System prompt
 
@@ -148,6 +147,9 @@ Choose *Create new Knowledge Base*
    
     a. Embeddings model = **Embed English**
     
+    > Converts text into vectors for semantic retrieval from your knowledge base.
+    > Use "Embed English" for English content; choose multilingual embeddings if documents span languages.
+    
     b. Vector store = **Vector engine for Amazon OpenSearch Serverless**
     
 5. Click *Create*
@@ -228,10 +230,9 @@ Renal dosing considerations for apixaban—summarize our policy with citations.
 #### Model
 
 1. Choose **Amazon Nova Lite** from the dropdown.
-2. Click the *Save* button in the top right. Make sure to do this periodically over the course of the lab.
+> Amazon Nova Lite is a cost‑efficient, low‑latency foundation model optimized for chat and tool‑use/agentic scenarios. It’s tuned for fast, general‑purpose reasoning and function calling, making it a strong fit for responsive operational assistants.
 
-> Amazon Nova Lite is a cost‑efficient, low‑latency foundation model optimized for chat and tool‑use/agentic scenarios.
-> It’s tuned for fast, general‑purpose reasoning and function calling, making it a strong fit for responsive operational assistants.
+2. Click the *Save* button in the top right. Make sure to do this periodically over the course of the lab.
 
 #### System prompt
 
@@ -339,6 +340,9 @@ Choose *Create new Knowledge Base*
 4. Configurations:
    
     a. Embeddings model = **Embed English**
+    
+    > Converts text into vectors for semantic retrieval from your knowledge base.
+    > Use "Embed English" for English content; choose multilingual embeddings if documents span languages.
     
     b. Vector store = **Vector engine for Amazon OpenSearch Serverless**
     
@@ -755,8 +759,7 @@ Open a High priority ticket for a recurring NIBP cuff error on unit 4B and summa
 
 ## Biomed IT Device Monitor
 
-> The Biomed IT Device Monitor at the bottom of this guide shows near‑real‑time API activity initiated by your agent.
-> As you chat, the agent can call device and helpdesk APIs (via functions) to look up inventory, draft tickets, or take actions on your behalf—those calls will appear here with method, path, status, and latency.
+> The Biomed IT Device Monitor shows near‑real‑time API activity initiated by your agent. As you chat, the agent can call device and helpdesk APIs (via functions) to look up inventory, draft tickets, or take actions on your behalf, with information about those calls appearing here.
 
 - Understand agentic behavior: see when the assistant performs function calls (e.g., `GET /biomed/devices/...` or `POST /helpdesk/tickets`).
 - Verify end‑to‑end flow: confirm calls succeed (2xx) and respond quickly; troubleshoot 4xx/5xx if they occur.
