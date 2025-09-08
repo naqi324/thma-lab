@@ -152,6 +152,9 @@ Choose *Create new Knowledge Base*
     
     b. Vector store = **Vector engine for Amazon OpenSearch Serverless**
     
+    > Stores embedding vectors and metadata to power fast semantic retrieval.
+    > OpenSearch Serverless provides managed, scalable RAG without cluster operations.
+    
 5. Click *Create*
 6. Back under *Select Knowledge Base*, choose *formulary-kb*. (This is the same as the knowledge base you just created.)
 
@@ -345,6 +348,9 @@ Choose *Create new Knowledge Base*
     > Use "Embed English" for English content; choose multilingual embeddings if documents span languages.
     
     b. Vector store = **Vector engine for Amazon OpenSearch Serverless**
+    
+    > Stores embedding vectors and metadata to power fast semantic retrieval.
+    > OpenSearch Serverless provides managed, scalable RAG without cluster operations.
     
 5. Click *Create*
 6. Back under *Select Knowledge Base*, choose *device-kb*
