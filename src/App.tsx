@@ -393,10 +393,17 @@ return (
 
     <main style={{ paddingTop: '20px', position: 'relative' }}>
       {/* Minimal AWS logo, non-intrusive */}
-      <div className="aws-logo" aria-label="AWS logo" title="AWS" style={{ position: 'absolute', top: '12px', right: '12px', color: 'var(--text)', opacity: 0.9 }}>
-        <svg width="64" height="24" viewBox="0 0 90 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
-          <text x="0" y="18" fill="currentColor" fontFamily="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" fontWeight="700" fontSize="18">AWS</text>
-          <path d="M35 24c8 3.2 18 2.8 26-1.6" stroke="var(--aws-gold)" strokeWidth="2.6" strokeLinecap="round" fill="none"/>
+      <div className="aws-logo" aria-label="AWS logo" title="AWS" style={{ position: 'absolute', top: '10px', right: '12px', color: 'var(--text)', opacity: 0.95 }}>
+        <svg width="88" height="28" viewBox="0 0 140 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          {/* wordmark */}
+          <g fill="currentColor">
+            <path d="M21.9 33.6c-4.9 0-8.6-3.7-8.6-8.7 0-5 3.7-8.7 8.8-8.7 3.1 0 5.5 1.2 7.1 3.5l-3.2 2.1c-1-1.3-2.3-2-4-2-2.8 0-4.7 2-4.7 5 0 3 1.9 5 4.8 5 1.7 0 3.1-.7 4.1-2l3.2 2c-1.6 2.4-4.1 3.8-7.5 3.8z"/>
+            <path d="M44.7 16.5c1.4 0 2.6.4 3.6 1.2 1 .8 1.8 1.9 2.4 3.5l4 11.7h-4.2l-2.6-8.6-2.6 8.6H41l4.5-12.9c.4-1.2.8-2.1 1.2-2.7.4-.6 1.1-.8 2.0-.8z"/>
+            <path d="M67.6 33.6c-4.9 0-8.6-3.7-8.6-8.7 0-5 3.7-8.7 8.8-8.7 3.1 0 5.5 1.2 7.1 3.5l-3.2 2.1c-1-1.3-2.3-2-4-2-2.8 0-4.7 2-4.7 5 0 3 1.9 5 4.8 5 1.7 0 3.1-.7 4.1-2l3.2 2c-1.6 2.4-4.1 3.8-7.5 3.8z"/>
+          </g>
+          {/* smile arrow (approximate) */}
+          <path d="M18 40c13 5.2 31 4.8 44-2.6" fill="none" stroke="var(--primary)" strokeWidth="3.2" strokeLinecap="round"/>
+          <path d="M62 33 l9 3 -7 6" fill="none" stroke="var(--primary)" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </div>
       {html === "Loading…" ? (
