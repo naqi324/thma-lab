@@ -746,3 +746,4 @@ Open a High priority ticket for a recurring NIBP cuff error on unit 4B and summa
 8. Test out your bot!
 
 ---
+<!-- API Monitor section removed as feature is not currently implemented -->

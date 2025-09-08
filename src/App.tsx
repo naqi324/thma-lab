@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
+// API Monitor removed; keep core app minimal
 
 
 const md = new MarkdownIt({
@@ -68,6 +69,8 @@ export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [tocOpen, setTocOpen] = useState(false);
+
+  // API monitoring removed
 
   // Track scroll progress and show/hide scroll to top button
   useEffect(() => {
@@ -203,6 +206,8 @@ useEffect(() => {
   const timer = setTimeout(enhanceInlineCode, 50);
   return () => clearTimeout(timer);
 }, [html]);
+
+// API monitor UI removed
 
 // Helper function to scroll to heading by ID
 const scrollToHeading = (headingId: string) => {
@@ -417,6 +422,7 @@ return (
         to { transform: rotate(360deg); }
       }
     `}</style>
+
   </>
 );
 }
