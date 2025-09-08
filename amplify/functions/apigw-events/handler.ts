@@ -24,6 +24,7 @@ export const handler = async (event: any) => {
     const qs = event?.queryStringParameters ?? {};
     const since = clampInt(qs.since ? parseInt(qs.since, 10) : Date.now() - 15000, 0, Date.now());
     const limit = clampInt(qs.limit ? parseInt(qs.limit, 10) : 30, 1, 100);
+    const debug = String(qs.debug || "").toLowerCase() === "1";
 
     const cw = new CloudWatchLogsClient({ region: REGION });
     const resp = await cw.send(new FilterLogEventsCommand({
@@ -34,9 +35,11 @@ export const handler = async (event: any) => {
     }));
 
     const out: ApiEvent[] = [];
+    let scanned = 0, parsed = 0, included = 0;
     let maxTs = since;
 
     for (const e of resp.events ?? []) {
+      scanned++;
       maxTs = Math.max(maxTs, e.timestamp ?? since);
       const msg = e.message ?? "";
       let o: any;
@@ -45,6 +48,7 @@ export const handler = async (event: any) => {
       } catch {
         continue;
       }
+      parsed++;
 
       // Common API Gateway access log fields (JSON format configured on the Stage)
       const method = o.httpMethod ?? o.requestMethod ?? "";
@@ -60,8 +64,10 @@ export const handler = async (event: any) => {
         resourcePath.startsWith("/biomed/devices") ||
         resourcePath === "/helpdesk/tickets" ||
         path.startsWith("/biomed/devices") ||
-        path === "/helpdesk/tickets";
+        path.endsWith("/helpdesk/tickets") ||
+        path.includes("/biomed/devices/");
       if (!include) continue;
+      included++;
 
       out.push({
         id: `${e.eventId ?? requestId ?? when}-${Math.random().toString(36).slice(2, 7)}`,
@@ -76,10 +82,14 @@ export const handler = async (event: any) => {
     const trimmed = out.slice(-limit);
     for (const ev of trimmed) redact(ev);
 
-    return json(200, { events: trimmed, nextSince: Math.max(maxTs, since) });
+    const body: any = { events: trimmed, nextSince: Math.max(maxTs, since) };
+    if (debug) {
+      body.meta = { scanned, parsed, included, logGroup: LOG_GROUP_NAME, region: REGION, requestSince: since };
+    }
+    return json(200, body);
   } catch (err: any) {
     console.error("monitor error", err?.message || err);
-    return json(200, { events: [], nextSince: Date.now(), warning: "Failed pulling logs; retrying." });
+    return json(200, { events: [], nextSince: Date.now(), warning: String(err?.message || err) });
   }
 };
 
@@ -112,4 +122,3 @@ function redact(ev: any) {
   const scrub = (s?: string) => (typeof s === "string" ? s.replace(tokenish, mask).replace(email, "user@…") : s);
   ev.request && (ev.request.path = scrub(ev.request.path));
 }
-
