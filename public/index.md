@@ -9,10 +9,10 @@
 
 ## App 1: Formulary & Patient Education
 
-1. Within [Amazon SageMaker Unified](https://dzd_bv47inn29chvps.sagemaker.us-west-2.on.aws/home), under **Build**, where it says *Generative AI app development with Amazon Bedrock*, choose *Build chat agent*.
+1. Within <a href="https://dzd_bv47inn29chvps.sagemaker.us-west-2.on.aws/home" target="_blank" rel="noopener noreferrer">Amazon SageMaker Unified</a>, under **Build**, where it says *Generative AI app development with Amazon Bedrock*, choose *Build chat agent*.
 ![Build chat agent button](/images/unified-build-chat-agent.png)
-2. When prompted to select a project, choose `thma-lab` and click continue.
-3. On the new screen, rename the app: `Formulary Assistant YOUR-INITIALS`.
+2. When prompted to select a project, choose **thma-lab** and click continue.
+3. On the new screen, rename the app: **Formulary Assistant YOUR INITIALS**. (You cannot copy and paste this; you will need to manually type the name of the app.)
 
 ### Configurations
 
@@ -102,9 +102,9 @@ Refusal + reason: educational only; cannot provide individualized dosing; advise
 
 ##### Randomness and diversity
 
-- Temperature = 0.3
-- Top P = 0.9
-- Maximum length = 2048
+- Temperature = **0.3**
+- Top P = **0.9**
+- Maximum length = **2048**
 
 #### Data
 
@@ -115,11 +115,11 @@ Choose *Create new Knowledge Base*
 
 ##### Knowledge Base details
 
-1. Name = `formulary-kb-YOUR-INITIALS`
+1. Name = `formulary-kb-INITIALS`
 2. Description = `Knowledge base for Formulary App`
 3. Under *Select data source type*, choose *Project data sources*, then proceed with the following:
    
-    a. From the drop down for *Select a data source*, choose `S3 (Default)`
+    a. From the drop down for *Select a data source*, choose **S3 (Default)**
     
     b. Under S3 URI, Click *Browse*
     
@@ -129,9 +129,10 @@ Choose *Create new Knowledge Base*
 
 4. Configurations:
    
-    a. Embeddings model = `Embed English`
+    a. Embeddings model = **Embed English**
     
-    b. Vector store = `Vector engine for Amazon OpenSearch Serverless`
+    b. Vector store = **Vector engine for Amazon OpenSearch Serverless**
+    
 5. Click *Create*
 6. Back under *Select Knowledge Base*, choose *formulary-kb*. (This is the same as the knowledge base you just created.)
 
@@ -141,7 +142,7 @@ Choose *Create new Knowledge Base*
 > Guardrails act as safety barriers that prevent your AI from providing inappropriate or harmful content. They filter out topics you've defined as off-limits and can detect attempts to manipulate the AI into unsafe behavior. 
 
 1. Choose *Create new guardrail*
-2. Guardrail name = `formulary-guard-YOUR-INITIALS`
+2. Guardrail name = `formulary-guard-INITIALS`
 3. Choose *Use advanced filters*
 4. Choose *Denied topics*:
    
@@ -152,6 +153,7 @@ Choose *Create new Knowledge Base*
     c. Definition for topic = `Diagnosis, diagnoses, treatment plans, individual dosing advice`
     
     d. Choose *Save*
+    
 5. Choose *Create*
 6. Back under *Guardrails*, choose *formulary-guard* from the dropdown. (This is the same as the guardrail you just created.)
 7. Click the *Save* button in the top right after selecting your guardrail.
@@ -186,12 +188,13 @@ Renal dosing considerations for apixaban—summarize our policy with citations.
 
 1. Click *Save*
 2. Choose *Deploy*
-3. Alias name = `formulary-app`
+3. Alias name = `formulary-app-INITIALS`
 4. Choose *Deploy*
 5. Click three dots, next to *Deploy*
 ![Three dots](/images/three-dots.png)
 6. Click *Export* from the dropdown menu to see how the app can now be downloaded and then deployed.
 7. Click *Cancel*
+8. Test out your bot!
 
 ---
 
@@ -201,7 +204,7 @@ Renal dosing considerations for apixaban—summarize our policy with citations.
 1. Click *My Apps* in the left menu under *Asset gallery*.
 2. Click *Create app* and select *Chat agent app*
 ![Create chat agent app](/images/create-app.png)
-3. Name the app `Biomed‑IT Agent YOUR-INITIALS`. Make sure you actually type this out and not try to paste into this field.
+3. Name the app `BiomedIT Agent YOUR INITIALS`. Make sure you actually type this out and not try to paste into this field.
 
 ### Configurations
 
@@ -214,22 +217,19 @@ Renal dosing considerations for apixaban—summarize our policy with citations.
 
 1. In the *Enter a system prompt* field, enter the following:
 ```text
-You are a biomedical/IT support assistant. Use the knowledge base FIRST. When additional details are needed, you MAY call available functions; summarize tool results and include citations.
+You are a biomedical IT support assistant. Use the knowledge base FIRST. When additional details are needed, you MAY call functions.
 
 Safety
 - No PHI/PII; mask sensitive info.
-- Do not override manufacturer warnings; escalate when patient safety is at risk.
+- Do not override manufacturer warnings.
 
 Behavior
-- Provide step-by-step checklists and a short "When to escalate".
-- Ask for observable symptoms first.
-- Only call functions that improve accuracy (inventory lookup, ticket create). If a function fails, explain the fallback.
+- Provide checklists and a short "When to escalate".
+- Only call functions that improve accuracy. If a function fails, explain.
 
 Output
 1) Steps (numbered).
 2) When to escalate (bulleted).
-3) Evidence: doc_id — title — URL + any tool outputs used.
-
 ```
 2. Click the *Save* button in the top right.
 
@@ -251,7 +251,7 @@ Infusion pump is alarming 'Occlusion'. Nurse checked the bag is full. What next?
 *Model response*
 
 ```text
-Provide a 6-step checklist: inspect for kinks/clamps, check infiltration, flush if policy allows, verify pressure limit, replace tubing/set, then escalate to biomed if unresolved.
+Provide a checklist: inspect for kinks/clamps, check infiltration, flush if policy allows, verify pressure limit, replace tubing/set, then escalate if unresolved.
 ```
 
 
@@ -280,9 +280,9 @@ Expected summary: "Below par (3/6). Drafted restock note with unit and device ID
 
 ##### Randomness and diversity
 
-- Temperature = 0.3
-- Top P = 0.9
-- Maximum length = 2048
+- Temperature = **0.3**
+- Top P = **0.9**
+- Maximum length = **2048**
 
 #### Data
 
@@ -290,11 +290,11 @@ Choose *Create new Knowledge Base*
 
 ##### Knowledge Base details
 
-1. Name = `device-kb-YOUR-INITIALS`
+1. Name = `device-kb-INITIALS`
 2. Description = `Knowledge base for Bio-IT app`
 3. Under *Select data source type*, choose *Project data sources*, then proceed with the following:
    
-    a. From the drop down for *Select a data source*, choose `S3 (Default)`
+    a. From the drop down for *Select a data source*, choose **S3 (Default)**
     
     b. Under S3 URI, Click *Browse*
     
@@ -304,9 +304,10 @@ Choose *Create new Knowledge Base*
 
 4. Configurations:
    
-    a. Embeddings model = `Embed English`
+    a. Embeddings model = **Embed English**
     
-    b. Vector store = `Vector engine for Amazon OpenSearch Serverless`
+    b. Vector store = **Vector engine for Amazon OpenSearch Serverless**
+    
 5. Click *Create*
 6. Back under *Select Knowledge Base*, choose *device-kb*
 7. Click the *Save* button in the top right after selecting your knowledge base.
@@ -324,7 +325,7 @@ We will now add agentic functions to the app. You have the option of using some 
 
 ##### Use Pre-built Functions
 
-1. Under functions, select both `device_lookup` and `helpdesk_ticket`
+1. Under functions, select both **device_lookup** and **helpdesk_ticket**
 ![Select functions](/images/select-functions.png)
 2. Click the *Save* button in the top right to save your progress.
 
@@ -338,7 +339,7 @@ Click *Create new function*
 
 ###### helpdesk_ticket function
 
-1. Assign this *Function name* = `helpdesk_ticket_YOUR_INITIALS`
+1. Assign this *Function name* = `helpdesk_ticket_INITIALS`
 2. Paste this in for the *Function schema:*
 <details>
 
@@ -504,12 +505,13 @@ Click *Create new function*
 ```
 </details>
 
-3. Authentication method = `Api keys (Max. 2 keys)`
-4. Key sent in = *Header*
-5. Key name = `x-api-key`
-6. Key value = `7R0ltfmKbL7i8Pj5JJbc2a5lgatIBYMr2B5lCxRi`
-7. Click *Create*
-8. Click the *Save* button in the top right to save this function.
+3. Click the *Validate schema* button.
+4. Authentication method = **Api keys (Max. 2 keys)**
+5. Key sent in = *Header*
+6. Key name = `x-api-key`
+7. Key value = `7R0ltfmKbL7i8Pj5JJbc2a5lgatIBYMr2B5lCxRi`
+8. Click *Create*.
+9. Click the *Save* button in the top right to save this function.
 
 ###### device_lookup function
 
@@ -668,14 +670,15 @@ Click *Create new function*
 ```
 </details>
 
-3. Authentication method = `Api keys (Max. 2 keys)`
-4. Key sent in = *Header*
-5. Key name = `x-api-key`
-6. Key value = `7R0ltfmKbL7i8Pj5JJbc2a5lgatIBYMr2B5lCxRi`
-7. Click *Create*
-8. Back under functions, select both `device_lookup` and `helpdesk_ticket`
-![Select functions](/images/select-functions.png)
-9. Click the *Save* button in the top right to save both functions.
+3. Click the *Validate schema* button.
+4. Authentication method = **Api keys (Max. 2 keys)**
+5. Key sent in = *Header*
+6. Key name = `x-api-key`
+7. Key value = `7R0ltfmKbL7i8Pj5JJbc2a5lgatIBYMr2B5lCxRi`
+8. Click *Create*
+9. Back under functions, select both `device_lookup` and `helpdesk_ticket`
+    ![Select functions](/images/select-functions.png)
+10. Click the *Save* button in the top right to save both functions.
 
 
 #### UI
@@ -706,11 +709,12 @@ Open a High priority ticket for a recurring NIBP cuff error on unit 4B and summa
 
 1. Click *Save*
 2. Choose *Deploy*
-3. Alias name = `biomed-it-app`
+3. Alias name = `biomed-it-app-INITIALS`
 4. Choose *Deploy*
 5. Click three dots, next to *Deploy*
 ![Three dots](/images/three-dots.png)
 6. Click *Export* from the dropdown menu to see how the app can now be downloaded and then deployed.
 7. Click *Cancel*
+8. Test out your bot!
 
 ---

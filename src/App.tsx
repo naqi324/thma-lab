@@ -13,18 +13,20 @@ const md = new MarkdownIt({
 const headingIds: { [key: string]: number } = {};
 
 // Custom renderer for headings to add IDs
-const defaultHeadingRenderer = md.renderer.rules.heading_open || function(tokens: any, idx: any, options: any, _env: any, self: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const defaultHeadingRenderer = md.renderer.rules.heading_open || function(tokens: any[], idx: number, options: any, _env: any, self: any) {
   return self.renderToken(tokens, idx, options);
 };
 
-md.renderer.rules.heading_open = function(tokens: any, idx: any, options: any, _env: any, self: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+md.renderer.rules.heading_open = function(tokens: any[], idx: number, options: any, _env: any, self: any) {
   const token = tokens[idx];
   const nextToken = tokens[idx + 1];
   
   if (nextToken && nextToken.type === 'inline' && nextToken.content) {
     // Generate ID from heading content
-    let headingText = nextToken.content;
-    let baseId = headingText.trim().toLowerCase()
+    const headingText = nextToken.content;
+    const baseId = headingText.trim().toLowerCase()
       .replace(/<[^>]*>/g, '') // Remove HTML tags
       .replace(/[^\w\s-]/g, '') // Remove special characters
       .replace(/[\s_-]+/g, '-') // Replace spaces with hyphens
@@ -149,6 +151,56 @@ useEffect(() => {
 
   // Run after the DOM updates
   const timer = setTimeout(enhance, 0);
+  return () => clearTimeout(timer);
+}, [html]);
+
+// Enhance inline code elements with copy buttons
+useEffect(() => {
+  if (!html) return;
+
+  const enhanceInlineCode = () => {
+    // Find all inline <code> elements (not inside <pre>)
+    document.querySelectorAll<HTMLElement>(".content code").forEach((code) => {
+      // Skip if inside <pre> or already enhanced
+      if (code.parentElement?.tagName === "PRE") return;
+      if (code.parentElement?.classList.contains("inline-code-wrapper")) return;
+      
+      // Create wrapper
+      const wrapper = document.createElement("span");
+      wrapper.className = "inline-code-wrapper";
+      
+      // Clone the code element
+      const codeClone = code.cloneNode(true) as HTMLElement;
+      
+      // Create copy button
+      const btn = document.createElement("button");
+      btn.className = "inline-copy-btn";
+      btn.type = "button";
+      btn.title = "Copy";
+      btn.setAttribute("aria-label", "Copy code");
+      btn.textContent = "📋";
+      
+      // Copy handler
+      btn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const text = code.textContent || "";
+        navigator.clipboard.writeText(text).then(() => {
+          const original = btn.textContent;
+          btn.textContent = "✓";
+          setTimeout(() => (btn.textContent = original || "📋"), 1500);
+        });
+      };
+      
+      // Replace original code with wrapper
+      code.replaceWith(wrapper);
+      wrapper.appendChild(codeClone);
+      wrapper.appendChild(btn);
+    });
+  };
+
+  // Run after the DOM updates
+  const timer = setTimeout(enhanceInlineCode, 50);
   return () => clearTimeout(timer);
 }, [html]);
 
