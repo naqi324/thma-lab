@@ -7,6 +7,14 @@ type ApiEvent = {
   request: { method: string; path: string };
   response?: { status: number; latencyMs: number };
   requestId?: string;
+  meta?: {
+    ip?: string;
+    resourcePath?: string;
+    path?: string;
+    responseLength?: number;
+    integrationStatus?: string | number;
+    integrationLatency?: number;
+  };
 };
 
 const endpoint =
@@ -16,6 +24,7 @@ export default function ApiGatewayLiveMonitor() {
   const [events, setEvents] = useState<ApiEvent[]>([]);
   const [online, setOnline] = useState<boolean>(true);
   const [paused, setPaused] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [demo, setDemo] = useState<boolean>(false);
   const sinceRef = useRef<number>(Date.now() - 15000);
   const timerRef = useRef<number | null>(null);
@@ -84,13 +93,14 @@ export default function ApiGatewayLiveMonitor() {
 
   const onPause = () => setPaused((p) => !p);
   const onDemo = () => setDemo((d) => !d);
+  const toggleRow = (id: string) => setExpanded((m) => ({ ...m, [id]: !m[id] }));
 
   return (
     <section id="biomedit-device-monitor" className="thma-monitor" aria-live="polite">
       <style>{css}</style>
       <header className="thma-monitor__hdr">
         <div className="thma-monitor__title">
-          <strong>BiomedIT Device Monitor</strong>
+          <strong>Biomed IT Device Monitor</strong>
         </div>
         <div className="thma-monitor__status">
           <span className={online ? "dot on" : "dot off"} />
@@ -114,19 +124,35 @@ export default function ApiGatewayLiveMonitor() {
 
       <ol className="thma-monitor__list" reversed>
         {[...events].reverse().map((e) => (
-          <li key={e.id} className="thma-monitor__row">
-            <time className="ts">{fmtTime(e.ts)}</time>
-            <span className={`method m-${(e.request.method || "GET").toLowerCase()}`}>
-              {e.request.method || "—"}
-            </span>
-            <code className="path">{e.request.path || "—"}</code>
-            <span
-              className={`status s-${bucket(e.response?.status ?? 0)}`}
-              title={`status ${e.response?.status ?? 0}`}
-            >
-              {e.response?.status ?? "—"}
-            </span>
-            <span className="latency">{e.response?.latencyMs ?? "—"} ms</span>
+          <li key={e.id} className={"thma-monitor__row" + (expanded[e.id] ? " is-open" : "")}>
+            <button className="rowbtn" onClick={() => toggleRow(e.id)} aria-expanded={!!expanded[e.id]} aria-controls={`row-${e.id}`}>
+              <time className="ts">{fmtTime(e.ts)}</time>
+              <span className={`method m-${(e.request.method || "GET").toLowerCase()}`}>
+                {e.request.method || "—"}
+              </span>
+              <code className="path">{e.request.path || "—"}</code>
+              <span
+                className={`status s-${bucket(e.response?.status ?? 0)}`}
+                title={`status ${e.response?.status ?? 0}`}
+              >
+                {e.response?.status ?? "—"}
+              </span>
+              <span className="latency">{e.response?.latencyMs ?? "—"} ms</span>
+              <span className="chev" aria-hidden>▸</span>
+            </button>
+            {expanded[e.id] && (
+              <div id={`row-${e.id}`} className="thma-monitor__details">
+                <div className="grid">
+                  <div><label>Request ID</label><code>{e.requestId || "—"}</code></div>
+                  <div><label>Client IP</label><code>{e.meta?.ip || "—"}</code></div>
+                  <div><label>Resource</label><code>{e.meta?.resourcePath || "—"}</code></div>
+                  <div><label>Path</label><code>{e.meta?.path || e.request.path || "—"}</code></div>
+                  <div><label>Integration</label><code>{String(e.meta?.integrationStatus ?? "—")}</code></div>
+                  <div><label>Int. Latency</label><code>{e.meta?.integrationLatency ?? "—"} ms</code></div>
+                  <div><label>Resp. Length</label><code>{e.meta?.responseLength ?? "—"} B</code></div>
+                </div>
+              </div>
+            )}
           </li>
         ))}
       </ol>
@@ -169,8 +195,16 @@ const css = `
 .thma-monitor__btn:hover{background:#8881}
 .thma-monitor__warn{padding:8px 12px;color:#b45309}
 .thma-monitor__list{list-style:none;margin:0;padding:4px 0}
-.thma-monitor__row{display:grid;grid-template-columns:100px 64px minmax(140px,1fr) 72px 80px;gap:10px;align-items:center;padding:8px 12px;border-top:1px dashed #8882}
-.thma-monitor__row:nth-child(odd){background:#fff1;}
+.thma-monitor__row{border-top:1px dashed #8882}
+.thma-monitor__row:nth-child(odd){background:#fff1}
+.rowbtn{display:grid;grid-template-columns:100px 64px minmax(140px,1fr) 72px 80px 18px;gap:10px;align-items:center;padding:8px 12px;width:100%;background:transparent;border:0;color:inherit;text-align:left;cursor:pointer}
+.rowbtn:hover{background:#fff2}
+.chev{justify-self:end;opacity:.7;transform:rotate(0deg);transition:transform .15s ease}
+.is-open .chev{transform:rotate(90deg)}
+.thma-monitor__details{padding:8px 12px 12px;background:#0001;border-top:1px dashed #8883}
+.thma-monitor__details .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.thma-monitor__details label{display:block;font-size:12px;color:#9ca3af}
+.thma-monitor__details code{display:block;background:#0002;padding:4px 6px;border-radius:6px;border:1px solid #8882;word-break:break-all}
 .ts{opacity:.8}
 .method{font-weight:700}
 .m-get{color:#60a5fa}.m-post{color:#34d399}.m-put{color:#f59e0b}.m-delete{color:#f87171}

@@ -337,7 +337,7 @@ return (
             </ul>
           </li>
           <li style={{ marginBottom: '0.75rem' }}>
-            <button className="toc-link" onClick={() => scrollToHeading('biomedit-device-monitor')}>BiomedIT Device Monitor</button>
+            <button className="toc-link" onClick={() => scrollToHeading('biomedit-device-monitor')}>Biomed IT Device Monitor</button>
           </li>
         </ul>
       </nav>

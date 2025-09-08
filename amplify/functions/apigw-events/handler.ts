@@ -13,6 +13,15 @@ type ApiEvent = {
   request: { method: string; path: string };
   response?: { status: number; latencyMs: number };
   requestId?: string;
+  // additional metadata for details view
+  meta?: {
+    ip?: string;
+    resourcePath?: string;
+    path?: string;
+    responseLength?: number;
+    integrationStatus?: string | number;
+    integrationLatency?: number;
+  };
 };
 
 export const handler = async (event: any) => {
@@ -75,6 +84,14 @@ export const handler = async (event: any) => {
         request: { method, path },
         response: { status, latencyMs },
         requestId,
+        meta: {
+          ip: typeof o.ip === "string" ? o.ip : undefined,
+          resourcePath,
+          path,
+          responseLength: toInt(o.responseLength, 0),
+          integrationStatus: o.integrationStatus,
+          integrationLatency: toInt(o.integrationLatency, 0),
+        },
       });
     }
 
