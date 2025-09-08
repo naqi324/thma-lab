@@ -138,7 +138,7 @@ export const handler = async (event: any) => {
         for (const ev of trimmed) {
           if (ev.requestId && bodyByReq.has(ev.requestId)) {
             const b = bodyByReq.get(ev.requestId)!;
-            const safe = scrub(b);
+            const safe = scrubText(b);
             ev.meta = ev.meta || {};
             ev.meta.body = safe;
           }
@@ -180,6 +180,13 @@ function clampInt(n: number, min: number, max: number) {
 function toInt(v: any, dflt: number) {
   const n = Number(v);
   return Number.isFinite(n) ? Math.trunc(n) : dflt;
+}
+function scrubText(s?: string) {
+  if (typeof s !== "string") return s as any;
+  const mask = (t: string) => (t.length > 8 ? t.slice(0, 4) + "…" + t.slice(-2) : "•••");
+  const tokenish = /(?<![A-Za-z0-9])[A-Za-z0-9_\-]{24,64}(?![A-Za-z0-9])/g;
+  const email = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g;
+  return s.replace(tokenish, mask).replace(email, "user@…");
 }
 function redact(ev: any) {
   const mask = (s: string) => (s.length > 8 ? s.slice(0, 4) + "…" + s.slice(-2) : "•••");
